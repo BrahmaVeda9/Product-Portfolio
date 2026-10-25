@@ -10,7 +10,11 @@ export interface Profile {
   id: string;
   full_name: string | null;
   headline: string | null;
+  /** Used as the hero tagline / short intro on the Home page */
+  home_tagline: string | null;
   summary: string | null;
+  /** PM approach / philosophy shown on the About page */
+  about_approach: string | null;
   avatar_url: string | null;
   location: string | null;
   email: string | null;
@@ -40,6 +44,10 @@ export interface Project {
   solution: string | null;
   outcomes: string | null;
   project_url: string | null;
+  /** URL to live prototype or demo */
+  prototype_url: string | null;
+  /** URL to downloadable case study PDF */
+  case_study_pdf_url: string | null;
   featured: boolean;
   status: ProjectStatus;
   display_order: number;

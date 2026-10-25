@@ -3,7 +3,7 @@ import Footer from '@/components/public/Footer';
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="exec-bg min-h-screen text-slate-100 selection:bg-slate-700 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />

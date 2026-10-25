@@ -7,25 +7,27 @@ import type { Profile } from '@/types/database.types';
 
 export default function AdminProfilePage() {
   const supabase = createClient();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [loading,   setLoading]   = useState(true);
+  const [saving,    setSaving]    = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId,    setUserId]    = useState<string | null>(null);
   const avatarRef = useRef<HTMLInputElement>(null);
   const resumeRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState<Omit<Profile, 'id' | 'updated_at'>>({
-    full_name: '',
-    headline: '',
-    summary: '',
-    avatar_url: '',
-    location: '',
-    email: '',
-    linkedin_url: '',
-    github_url: '',
-    twitter_url: '',
-    resume_url: '',
-    keywords: [],
+    full_name:      '',
+    headline:       '',
+    home_tagline:   '',
+    summary:        '',
+    about_approach: '',
+    avatar_url:     '',
+    location:       '',
+    email:          '',
+    linkedin_url:   '',
+    github_url:     '',
+    twitter_url:    '',
+    resume_url:     '',
+    keywords:       [],
   });
   const [keywordsInput, setKeywordsInput] = useState('');
 
@@ -38,17 +40,19 @@ export default function AdminProfilePage() {
       const { data } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
       if (data) {
         setForm({
-          full_name: data.full_name ?? '',
-          headline: data.headline ?? '',
-          summary: data.summary ?? '',
-          avatar_url: data.avatar_url ?? '',
-          location: data.location ?? '',
-          email: data.email ?? '',
-          linkedin_url: data.linkedin_url ?? '',
-          github_url: data.github_url ?? '',
-          twitter_url: data.twitter_url ?? '',
-          resume_url: data.resume_url ?? '',
-          keywords: data.keywords ?? [],
+          full_name:      data.full_name      ?? '',
+          headline:       data.headline       ?? '',
+          home_tagline:   data.home_tagline   ?? '',
+          summary:        data.summary        ?? '',
+          about_approach: data.about_approach ?? '',
+          avatar_url:     data.avatar_url     ?? '',
+          location:       data.location       ?? '',
+          email:          data.email          ?? '',
+          linkedin_url:   data.linkedin_url   ?? '',
+          github_url:     data.github_url     ?? '',
+          twitter_url:    data.twitter_url    ?? '',
+          resume_url:     data.resume_url     ?? '',
+          keywords:       data.keywords       ?? [],
         });
         setKeywordsInput((data.keywords ?? []).join(', '));
       }
@@ -62,10 +66,7 @@ export default function AdminProfilePage() {
     if (!userId) return;
     setSaving(true);
 
-    const keywords = keywordsInput
-      .split(',')
-      .map((k) => k.trim())
-      .filter(Boolean);
+    const keywords = keywordsInput.split(',').map((k) => k.trim()).filter(Boolean);
 
     const { error } = await supabase.from('profiles').upsert({
       id: userId,
@@ -89,9 +90,7 @@ export default function AdminProfilePage() {
     field: keyof typeof form
   ) => {
     setUploading(true);
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(path, file, { upsert: true });
+    const { data, error } = await supabase.storage.from(bucket).upload(path, file, { upsert: true });
 
     if (error) {
       toast.error(error.message);
@@ -99,10 +98,7 @@ export default function AdminProfilePage() {
       return;
     }
 
-    const { data: { publicUrl } } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(data.path);
-
+    const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(data.path);
     setForm((prev) => ({ ...prev, [field]: publicUrl }));
     toast.success('File uploaded!');
     setUploading(false);
@@ -120,13 +116,14 @@ export default function AdminProfilePage() {
     <div className="mx-auto max-w-3xl space-y-8 pt-16 lg:pt-0">
       <div>
         <h1 className="text-3xl font-black text-white">Edit Profile</h1>
-        <p className="mt-1 text-zinc-500">Update your public portfolio information.</p>
+        <p className="mt-1 text-zinc-500">Update your public portfolio information across all sections.</p>
       </div>
 
       <form id="admin-profile-form" onSubmit={handleSave} className="space-y-6">
-        {/* Basic info */}
+
+        {/* ─── IDENTITY ─────────────────────────────────────────── */}
         <div className="glass-card space-y-5 p-6">
-          <h2 className="font-bold text-white">Basic Information</h2>
+          <h2 className="font-bold text-white text-lg border-b border-brand-900/20 pb-3">Identity</h2>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -150,7 +147,10 @@ export default function AdminProfilePage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-400">Headline</label>
+            <label className="mb-2 block text-sm text-zinc-400">
+              Headline
+              <span className="ml-2 text-xs text-zinc-600">Shown in Experience page header & hero subtitle</span>
+            </label>
             <input
               className="input"
               placeholder="Senior Product Manager | AI/GenAI | SaaS"
@@ -160,20 +160,9 @@ export default function AdminProfilePage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-400">Summary / Bio</label>
-            <textarea
-              className="textarea"
-              rows={6}
-              placeholder="Write your bio here. Use double line breaks to create paragraphs."
-              value={form.summary ?? ''}
-              onChange={(e) => setForm({ ...form, summary: e.target.value })}
-            />
-          </div>
-
-          <div>
             <label className="mb-2 block text-sm text-zinc-400">
               Keywords / Focus Areas
-              <span className="ml-2 text-xs text-zinc-600">(comma-separated)</span>
+              <span className="ml-2 text-xs text-zinc-600">Comma-separated — shown as badge tags</span>
             </label>
             <input
               className="input"
@@ -184,9 +173,56 @@ export default function AdminProfilePage() {
           </div>
         </div>
 
-        {/* Contact & Social */}
+        {/* ─── HOME PAGE CONTENT ────────────────────────────────── */}
         <div className="glass-card space-y-5 p-6">
-          <h2 className="font-bold text-white">Contact & Social</h2>
+          <div className="border-b border-brand-900/20 pb-3">
+            <h2 className="font-bold text-white text-lg">🏠 Home Page Content</h2>
+            <p className="text-xs text-zinc-500 mt-1">Controls what appears in the hero section of your home page.</p>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm text-zinc-400">
+              Hero Summary
+              <span className="ml-2 text-xs text-zinc-600">Main description paragraph below your name in the hero</span>
+            </label>
+            <textarea
+              className="textarea"
+              rows={4}
+              placeholder="Driving product vision, technical architecture, and cross-functional execution to scale AI/GenAI platforms, enterprise SaaS, and automated workflow systems."
+              value={form.summary ?? ''}
+              onChange={(e) => setForm({ ...form, summary: e.target.value })}
+            />
+          </div>
+        </div>
+
+        {/* ─── ABOUT PAGE CONTENT ───────────────────────────────── */}
+        <div className="glass-card space-y-5 p-6">
+          <div className="border-b border-brand-900/20 pb-3">
+            <h2 className="font-bold text-white text-lg">👤 About Page Content</h2>
+            <p className="text-xs text-zinc-500 mt-1">Controls the bio and PM approach shown on your About page.</p>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm text-zinc-400">
+              About Description / Bio
+              <span className="ml-2 text-xs text-zinc-600">Use double line breaks (Enter twice) to separate paragraphs</span>
+            </label>
+            <textarea
+              className="textarea"
+              rows={8}
+              placeholder={`Senior Product Leader with deep expertise spanning 0→1 innovation...\n\nThroughout my career, I have operated at the intersection of business strategy...`}
+              value={form.about_approach ?? ''}
+              onChange={(e) => setForm({ ...form, about_approach: e.target.value })}
+            />
+            <p className="mt-1.5 text-xs text-zinc-600">
+              Tip: This is your detailed bio for the About page. The Hero Summary above is used for the home page.
+            </p>
+          </div>
+        </div>
+
+        {/* ─── CONTACT & SOCIAL ─────────────────────────────────── */}
+        <div className="glass-card space-y-5 p-6">
+          <h2 className="font-bold text-white text-lg border-b border-brand-900/20 pb-3">Contact & Social</h2>
 
           <div>
             <label className="mb-2 block text-sm text-zinc-400">Email</label>
@@ -231,9 +267,9 @@ export default function AdminProfilePage() {
           </div>
         </div>
 
-        {/* Files */}
+        {/* ─── FILES & MEDIA ────────────────────────────────────── */}
         <div className="glass-card space-y-6 p-6">
-          <h2 className="font-bold text-white">Files & Media</h2>
+          <h2 className="font-bold text-white text-lg border-b border-brand-900/20 pb-3">Files & Media</h2>
 
           {/* Avatar */}
           <div>
@@ -321,7 +357,7 @@ export default function AdminProfilePage() {
           </div>
         </div>
 
-        {/* Save */}
+        {/* ─── SAVE ─────────────────────────────────────────────── */}
         <div className="flex justify-end">
           <button
             id="admin-profile-save"

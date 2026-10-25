@@ -35,6 +35,8 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
     solution: project?.solution ?? '',
     outcomes: project?.outcomes ?? '',
     project_url: project?.project_url ?? '',
+    prototype_url: project?.prototype_url ?? '',
+    case_study_pdf_url: project?.case_study_pdf_url ?? '',
     featured: project?.featured ?? false,
     status: project?.status ?? 'draft',
     display_order: project?.display_order ?? 0,
@@ -106,6 +108,8 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
       solution: form.solution || null,
       outcomes: form.outcomes || null,
       project_url: form.project_url || null,
+      prototype_url: form.prototype_url || null,
+      case_study_pdf_url: form.case_study_pdf_url || null,
       featured: form.featured,
       status: finalStatus,
       display_order: Number(form.display_order),
@@ -260,6 +264,40 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
             placeholder="https://..."
             value={form.project_url}
             onChange={(e) => setForm({ ...form, project_url: e.target.value })}
+          />
+        </div>
+      </div>
+
+      {/* Links & Resources */}
+      <div className="glass-card space-y-5 p-6">
+        <h2 className="font-bold text-white">Links & Resources</h2>
+        <p className="text-sm text-zinc-500">
+          Add links to your live prototype, demo, and a downloadable case study PDF.
+        </p>
+
+        <div>
+          <label className="mb-2 block text-sm text-zinc-400">
+            🧪 Prototype / Demo URL
+            <span className="ml-2 text-xs text-zinc-600">Link to a live demo or Figma prototype</span>
+          </label>
+          <input
+            className="input"
+            placeholder="https://figma.com/proto/... or https://demo.example.com"
+            value={form.prototype_url}
+            onChange={(e) => setForm({ ...form, prototype_url: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm text-zinc-400">
+            📄 Case Study PDF URL
+            <span className="ml-2 text-xs text-zinc-600">Link to a downloadable case study document</span>
+          </label>
+          <input
+            className="input"
+            placeholder="https://... (PDF URL or upload to portfolio-assets storage)"
+            value={form.case_study_pdf_url}
+            onChange={(e) => setForm({ ...form, case_study_pdf_url: e.target.value })}
           />
         </div>
       </div>
