@@ -79,12 +79,29 @@ export default function AdminProfilePage() {
 
     const keywords = keywordsInput.split(',').map((k) => k.trim()).filter(Boolean);
 
-    const { error } = await supabase.from('profiles').upsert({
+    const fullPayload = {
       id: userId,
       ...form,
       keywords,
       updated_at: new Date().toISOString(),
-    });
+    };
+
+    let { error } = await supabase.from('profiles').upsert(fullPayload);
+
+    // If Supabase schema cache does not have the new columns yet (PGRST204)
+    if (error && (error.code === 'PGRST204' || error.message?.includes('schema cache'))) {
+      const { about_approach, home_tagline, impact_stats, ...legacyPayload } = fullPayload;
+      const fallbackResult = await supabase.from('profiles').upsert(legacyPayload);
+      if (!fallbackResult.error) {
+        toast.error(
+          'Saved base fields. To save new fields (About Approach, Home Tagline, Impact Stats), run Migration 003 in your Supabase SQL Editor.',
+          { duration: 8000 }
+        );
+        setSaving(false);
+        return;
+      }
+      error = fallbackResult.error;
+    }
 
     if (error) {
       toast.error(error.message);

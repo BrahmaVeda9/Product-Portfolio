@@ -120,33 +120,52 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
 
     if (project) {
       // Update
-      const { data, error } = await supabase
+      let res = await supabase
         .from('projects')
         .update(payload)
         .eq('id', project.id)
         .select()
         .single();
 
-      if (error) {
-        toast.error(error.message);
+      if (res.error && (res.error.code === 'PGRST204' || res.error.message?.includes('schema cache'))) {
+        const { prototype_url, case_study_pdf_url, ...legacyPayload } = payload;
+        res = await supabase
+          .from('projects')
+          .update(legacyPayload)
+          .eq('id', project.id)
+          .select()
+          .single();
+      }
+
+      if (res.error) {
+        toast.error(res.error.message);
         setSaving(false);
         return;
       }
-      savedProject = data as Project;
+      savedProject = res.data as Project;
     } else {
       // Insert
-      const { data, error } = await supabase
+      let res = await supabase
         .from('projects')
         .insert({ ...payload, created_at: new Date().toISOString() })
         .select()
         .single();
 
-      if (error) {
-        toast.error(error.message);
+      if (res.error && (res.error.code === 'PGRST204' || res.error.message?.includes('schema cache'))) {
+        const { prototype_url, case_study_pdf_url, ...legacyPayload } = payload;
+        res = await supabase
+          .from('projects')
+          .insert({ ...legacyPayload, created_at: new Date().toISOString() })
+          .select()
+          .single();
+      }
+
+      if (res.error) {
+        toast.error(res.error.message);
         setSaving(false);
         return;
       }
-      savedProject = data as Project;
+      savedProject = res.data as Project;
     }
 
     // Upsert case study if content provided
