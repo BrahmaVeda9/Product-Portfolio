@@ -23,6 +23,8 @@ export interface Profile {
   twitter_url: string | null;
   resume_url: string | null;
   keywords: string[];
+  /** Custom highlight metrics shown on Home page impact strip */
+  impact_stats?: Array<{ value: string; label: string }> | null;
   updated_at: string | null;
 }
 

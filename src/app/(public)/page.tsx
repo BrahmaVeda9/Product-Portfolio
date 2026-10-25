@@ -86,7 +86,7 @@ const expertiseAreas = [
   },
 ];
 
-const impactStats = [
+const defaultImpactStats = [
   { value: '8+', label: 'Years in Product' },
   { value: '15+', label: 'Products Shipped' },
   { value: '$40M+', label: 'ARR Influenced' },
@@ -100,6 +100,10 @@ export default async function HomePage() {
   const displayHeadline = profile?.headline    || 'Senior Product Manager & Strategic Builder';
   const displaySummary  = profile?.summary
     || 'Driving product vision, technical architecture, and cross-functional execution to scale AI/GenAI platforms, enterprise SaaS, and automated workflow systems.';
+
+  const stats = (profile?.impact_stats && Array.isArray(profile.impact_stats) && profile.impact_stats.length > 0)
+    ? profile.impact_stats
+    : defaultImpactStats;
 
   return (
     <>
@@ -296,8 +300,8 @@ export default async function HomePage() {
 
           {/* Impact Stats Row */}
           <div className="mt-16 pt-10 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {impactStats.map((stat) => (
-              <div key={stat.label} className="text-center">
+            {stats.map((stat, i) => (
+              <div key={stat.label || i} className="text-center">
                 <p className="text-3xl font-black text-gold-gradient">{stat.value}</p>
                 <p className="text-xs text-zinc-400 mt-1 font-medium tracking-wide">{stat.label}</p>
               </div>

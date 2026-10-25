@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   twitter_url     text,
   resume_url      text,
   keywords        text[] DEFAULT '{}',
+  impact_stats    jsonb DEFAULT '[]',
   updated_at      timestamptz DEFAULT now()
 );
 

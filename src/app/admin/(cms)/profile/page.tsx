@@ -14,6 +14,13 @@ export default function AdminProfilePage() {
   const avatarRef = useRef<HTMLInputElement>(null);
   const resumeRef = useRef<HTMLInputElement>(null);
 
+  const defaultStats = [
+    { value: '8+', label: 'Years in Product' },
+    { value: '15+', label: 'Products Shipped' },
+    { value: '$40M+', label: 'ARR Influenced' },
+    { value: '4', label: 'AI Agents Deployed' },
+  ];
+
   const [form, setForm] = useState<Omit<Profile, 'id' | 'updated_at'>>({
     full_name:      '',
     headline:       '',
@@ -28,6 +35,7 @@ export default function AdminProfilePage() {
     twitter_url:    '',
     resume_url:     '',
     keywords:       [],
+    impact_stats:   defaultStats,
   });
   const [keywordsInput, setKeywordsInput] = useState('');
 
@@ -53,6 +61,9 @@ export default function AdminProfilePage() {
           twitter_url:    data.twitter_url    ?? '',
           resume_url:     data.resume_url     ?? '',
           keywords:       data.keywords       ?? [],
+          impact_stats:   data.impact_stats && Array.isArray(data.impact_stats) && data.impact_stats.length > 0
+            ? data.impact_stats
+            : defaultStats,
         });
         setKeywordsInput((data.keywords ?? []).join(', '));
       }
@@ -192,6 +203,55 @@ export default function AdminProfilePage() {
               value={form.summary ?? ''}
               onChange={(e) => setForm({ ...form, summary: e.target.value })}
             />
+          </div>
+
+          {/* ── Impact Metrics (4 highlight stats) ── */}
+          <div className="pt-4 border-t border-brand-900/20">
+            <div className="mb-3">
+              <label className="block text-sm font-semibold text-white">
+                📊 Impact Bar Numbers (4 Highlights)
+              </label>
+              <p className="text-xs text-zinc-500 mt-0.5">
+                These numbers and labels appear prominently across the dark impact strip on your Home page.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              {(form.impact_stats ?? defaultStats).map((stat, idx) => (
+                <div key={idx} className="flex items-center gap-3 rounded-xl border border-white/[0.08] bg-brand-950/40 p-3">
+                  <div className="w-32">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
+                      Stat #{idx + 1} Number
+                    </label>
+                    <input
+                      className="input py-1.5 px-3 text-sm font-bold text-amber-400"
+                      placeholder="e.g. 8+"
+                      value={stat.value}
+                      onChange={(e) => {
+                        const newStats = [...(form.impact_stats ?? defaultStats)];
+                        newStats[idx] = { ...newStats[idx], value: e.target.value };
+                        setForm({ ...form, impact_stats: newStats });
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1">
+                      Label Description
+                    </label>
+                    <input
+                      className="input py-1.5 px-3 text-sm"
+                      placeholder="e.g. Years in Product"
+                      value={stat.label}
+                      onChange={(e) => {
+                        const newStats = [...(form.impact_stats ?? defaultStats)];
+                        newStats[idx] = { ...newStats[idx], label: e.target.value };
+                        setForm({ ...form, impact_stats: newStats });
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
