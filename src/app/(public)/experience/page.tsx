@@ -5,8 +5,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Experience & Education',
-  description: 'Professional career history and academic background in Product Management, AI, and SaaS.',
+  title: 'Experience',
+  description: 'Professional career history and leadership track record in Product Management, AI, and SaaS.',
 };
 
 async function getData() {
@@ -32,31 +32,6 @@ function DateRange({ start, end }: { start: string; end: string | null }) {
   );
 }
 
-const educationHistory = [
-  {
-    degree: 'Master of Science in Information Systems & Management',
-    institution: 'Graduate School of Technology & Management',
-    period: '2016 — 2018',
-    honors: 'Distinction & Magna Cum Laude',
-    focus: 'Concentration in Distributed Systems, Product Strategy, Decision Analytics, and Human-Computer Interaction.',
-    highlights: [
-      'Capstone Project: Real-time collaborative decision matrix for enterprise cross-functional teams',
-      'Graduate Research: Predictive analytics and algorithmic workflow automation',
-    ],
-  },
-  {
-    degree: 'Bachelor of Technology in Computer Science & Engineering',
-    institution: 'College of Engineering & Technology',
-    period: '2012 — 2016',
-    honors: 'First Class with Honors',
-    focus: 'Core computer science fundamentals, data structures, relational database management, and software architecture.',
-    highlights: [
-      'Published undergraduate paper on distributed database consistency protocols',
-      'Lead organizer for University Product & Developer Hackathons',
-    ],
-  },
-];
-
 export default async function ExperiencePage() {
   const { experience, profile } = await getData();
 
@@ -79,14 +54,6 @@ export default async function ExperiencePage() {
           <p className="mt-5 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
             {profile?.headline ?? 'Proven leadership delivering high-impact products across AI, SaaS platforms, and enterprise systems.'}
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a href="#experience" className="btn-gold text-xs px-5 py-2">
-              Career Timeline ↓
-            </a>
-            <a href="#education" className="btn-ghost-dark text-xs px-5 py-2">
-              Academic Background
-            </a>
-          </div>
         </div>
       </section>
 
@@ -161,68 +128,9 @@ export default async function ExperiencePage() {
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════
-          ACADEMIC FOUNDATION & EDUCATION — Light Ivory Section
-      ══════════════════════════════════════════════════ */}
-      <section id="education" className="section-light py-20 border-t border-navy-900/08 scroll-mt-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <div className="mb-12">
-            <span className="section-label-light mb-3 block w-fit">Academic Background</span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-navy-900">
-              Education & Academic Foundation
-            </h2>
-            <p className="mt-2 text-sm text-slate-500">
-              Foundational degrees in computer engineering, technology strategy, and information systems.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {educationHistory.map((edu) => (
-              <div
-                key={edu.degree}
-                className="card-light p-7 sm:p-8 shadow-card hover:shadow-ivory-lg transition-all duration-300"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 pb-5 border-b border-navy-900/07 mb-5">
-                  <div>
-                    <h3 className="text-xl font-bold tracking-tight text-navy-900">{edu.degree}</h3>
-                    <p className="text-sm font-semibold text-teal-600 mt-1">{edu.institution}</p>
-                  </div>
-                  <div className="flex flex-col sm:items-end gap-1.5">
-                    <span className="font-mono text-xs font-semibold text-navy-800 bg-navy-100/80 px-3 py-1 rounded-full border border-navy-200">
-                      {edu.period}
-                    </span>
-                    <span className="text-[11px] font-semibold text-gold-600 tracking-wide">
-                      {edu.honors}
-                    </span>
-                  </div>
-                </div>
-
-                <p className="text-sm leading-relaxed text-slate-600 mb-4">
-                  {edu.focus}
-                </p>
-
-                <div className="space-y-2">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 block">
-                    Academic Achievements & Research
-                  </span>
-                  <ul className="space-y-1.5">
-                    {edu.highlights.map((h, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
-                        <span className="h-1.5 w-1.5 rounded-full bg-teal-500 mt-1.5 flex-shrink-0" />
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
-          </div>
 
           {/* Bottom navigation CTA */}
-          <div className="mt-14 pt-8 border-t border-navy-900/08 flex flex-wrap items-center justify-between gap-4">
+          <div className="mt-16 pt-8 border-t border-navy-900/08 flex flex-wrap items-center justify-between gap-4">
             <Link href="/projects" className="btn-navy text-xs">
               Explore Shipped Case Studies →
             </Link>
