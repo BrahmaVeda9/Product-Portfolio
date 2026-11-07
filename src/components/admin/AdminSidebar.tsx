@@ -40,14 +40,14 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
       {/* Logo */}
-      <div className="border-b border-brand-900/20 px-6 py-6">
+      <div className="border-b border-[#E8D2B5]/12 px-6 py-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-brand text-sm font-black text-white shadow-glow-brand">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#E8D2B5] text-sm font-black text-[#590907] shadow-[0_4px_12px_rgba(89,9,7,0.4)]">
             A
           </div>
           <div>
-            <div className="text-sm font-bold text-white">Admin CMS</div>
-            <div className="text-xs text-zinc-500 truncate max-w-[140px]">{user.email}</div>
+            <div className="text-sm font-bold text-[#E8D2B5]">Admin CMS</div>
+            <div className="text-xs text-[#E8D2B5]/40 truncate max-w-[140px]">{user.email}</div>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
             <span className="text-lg">{item.icon}</span>
             {item.label}
             {isActive(item) && (
-              <div className="ml-auto h-1.5 w-1.5 rounded-full bg-brand-400" />
+              <div className="ml-auto h-1.5 w-1.5 rounded-full bg-[#E8D2B5]" />
             )}
           </Link>
         ))}
@@ -87,7 +87,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
       </div>
 
       {/* Logout */}
-      <div className="border-t border-brand-900/20 px-4 py-4">
+      <div className="border-t border-[#E8D2B5]/12 px-4 py-4">
         <button
           id="admin-logout-btn"
           onClick={handleLogout}
@@ -104,21 +104,21 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-brand-900/20 bg-surface-900 lg:block">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-[#E8D2B5]/10 bg-[#590907] lg:block">
         <SidebarContent />
       </aside>
 
       {/* Mobile hamburger */}
-      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-brand-900/20 bg-surface-900 px-4 py-3 lg:hidden">
-        <div className="flex items-center gap-2 text-sm font-bold text-white">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-brand text-xs font-black text-white">
+      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-[#E8D2B5]/10 bg-[#590907] px-4 py-3 lg:hidden">
+        <div className="flex items-center gap-2 text-sm font-bold text-[#E8D2B5]">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#E8D2B5] text-xs font-black text-[#590907]">
             A
           </span>
           Admin CMS
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 text-zinc-400"
+          className="p-2 text-[#E8D2B5]/60"
           aria-label="Toggle admin menu"
         >
           <span className="text-xl">{mobileOpen ? '✕' : '☰'}</span>
@@ -132,7 +132,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 w-64 border-r border-brand-900/20 bg-surface-900">
+          <aside className="absolute inset-y-0 left-0 w-64 border-r border-[#E8D2B5]/10 bg-[#590907]">
             <SidebarContent />
           </aside>
         </div>

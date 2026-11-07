@@ -41,21 +41,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased">
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
             style: {
-              background: '#16203d',
-              color: '#e8eaf0',
-              border: '1px solid rgba(244,169,10,0.2)',
+              background: '#590907',
+              color: '#E8D2B5',
+              border: '1px solid rgba(232, 210, 181, 0.25)',
               borderRadius: '12px',
               fontSize: '14px',
             },
             success: {
-              iconTheme: { primary: '#f4a90a', secondary: '#090e1c' },
+              iconTheme: { primary: '#E8D2B5', secondary: '#590907' },
             },
             error: {
               iconTheme: { primary: '#dc2626', secondary: '#fff' },

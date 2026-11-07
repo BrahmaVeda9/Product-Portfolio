@@ -65,28 +65,28 @@ export default async function AboutPage() {
   return (
     <>
       {/* ══════════════════════════════════════════════════
-          ABOUT HEADER — Dark Navy
+          ABOUT HEADER — Deep Burgundy
       ══════════════════════════════════════════════════ */}
       <section className="section-dark relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden">
         {/* Background decoration */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-navy-800/50 blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-teal-900/15 blur-3xl" />
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[#7a0c0a]/30 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-[#A5A79B]/08 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-5xl px-6">
           <span className="section-label-dark mb-4 block w-fit">Leadership Profile</span>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#E8D2B5] leading-tight max-w-3xl">
             Product Philosophy,<br />
             <span className="text-gold-gradient">Vision & Stewardship</span>
           </h1>
-          <p className="mt-5 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-5 text-base sm:text-lg text-[#E8D2B5]/65 max-w-2xl leading-relaxed">
             Delivering defensible market advantage by aligning organizational strategy with deep user empathy and technical precision.
           </p>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════
-          ABOUT CONTENT — Light Ivory
+          ABOUT CONTENT — Warm Cream Beige
       ══════════════════════════════════════════════════ */}
       <section className="section-light py-20">
         <div className="mx-auto max-w-5xl px-6">
@@ -94,8 +94,8 @@ export default async function AboutPage() {
 
             {/* ── Left: Portrait & Details ── */}
             <div className="space-y-6 lg:col-span-5">
-              <div className="card-light overflow-hidden shadow-card">
-                <div className="relative aspect-[4/5] w-full bg-ivory-200">
+              <div className="card-light overflow-hidden shadow-[0_4px_24px_rgba(41,39,36,0.1)]">
+                <div className="relative aspect-[4/5] w-full bg-[#E8D2B5]">
                   {profile?.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
@@ -105,23 +105,23 @@ export default async function AboutPage() {
                       priority
                     />
                   ) : (
-                    <div className="flex h-full w-full flex-col items-center justify-center p-8 bg-gradient-to-b from-ivory-200 to-ivory-300 text-center">
-                      <div className="h-24 w-24 rounded-2xl border-2 border-navy-900/10 bg-white flex items-center justify-center text-3xl font-black text-navy-900 shadow-card mb-4">
+                    <div className="flex h-full w-full flex-col items-center justify-center p-8 bg-gradient-to-b from-[#E8D2B5] to-[#d9b98a] text-center">
+                      <div className="h-24 w-24 rounded-2xl border-2 border-[#590907]/12 bg-white flex items-center justify-center text-3xl font-black text-[#590907] shadow-[0_4px_16px_rgba(41,39,36,0.1)] mb-4">
                         {profile?.full_name ? profile.full_name.slice(0, 2).toUpperCase() : 'PM'}
                       </div>
-                      <p className="text-sm font-semibold text-navy-900">
+                      <p className="text-sm font-semibold text-[#292724]">
                         {profile?.full_name || 'Product Executive'}
                       </p>
-                      <p className="text-xs text-slate-500 mt-1">Product Leadership</p>
+                      <p className="text-xs text-[#292724]/55 mt-1">Product Leadership</p>
                     </div>
                   )}
                 </div>
 
                 {/* Profile details strip */}
-                <div className="p-6 space-y-3 bg-white border-t border-navy-900/06">
+                <div className="p-6 space-y-3 bg-white border-t border-[#292724]/06">
                   {profile?.location && (
-                    <div className="flex items-center gap-3 text-sm text-slate-500">
-                      <svg className="h-4 w-4 text-teal-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center gap-3 text-sm text-[#292724]/60">
+                      <svg className="h-4 w-4 text-[#590907] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                       </svg>
@@ -129,25 +129,25 @@ export default async function AboutPage() {
                     </div>
                   )}
                   {profile?.email && (
-                    <div className="flex items-center gap-3 text-sm text-slate-500">
-                      <svg className="h-4 w-4 text-teal-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center gap-3 text-sm text-[#292724]/60">
+                      <svg className="h-4 w-4 text-[#590907] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                       </svg>
-                      <a href={`mailto:${profile.email}`} className="text-navy-800 hover:text-teal-600 transition-colors font-medium">
+                      <a href={`mailto:${profile.email}`} className="text-[#590907] hover:text-[#7a0c0a] transition-colors font-medium">
                         {profile.email}
                       </a>
                     </div>
                   )}
                   {profile?.linkedin_url && (
-                    <div className="flex items-center gap-3 text-sm text-slate-500">
-                      <svg className="h-4 w-4 text-teal-500 flex-shrink-0 fill-current" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-3 text-sm text-[#292724]/60">
+                      <svg className="h-4 w-4 text-[#590907] flex-shrink-0 fill-current" viewBox="0 0 24 24">
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                       </svg>
                       <a
                         href={profile.linkedin_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-navy-800 hover:text-teal-600 transition-colors font-medium"
+                        className="text-[#590907] hover:text-[#7a0c0a] transition-colors font-medium"
                       >
                         LinkedIn Profile ↗
                       </a>
@@ -185,10 +185,10 @@ export default async function AboutPage() {
             {/* ── Right: Bio & Focus ── */}
             <div className="space-y-10 lg:col-span-7">
               <div>
-                <h2 className="text-2xl font-bold tracking-tight text-navy-900 mb-5">
+                <h2 className="text-2xl font-bold tracking-tight text-[#292724] mb-5">
                   {headline}
                 </h2>
-                <div className="space-y-4 text-base leading-relaxed text-slate-600">
+                <div className="space-y-4 text-base leading-relaxed text-[#292724]/65">
                   {paragraphs.map((para, i) => (
                     <p key={i}>{para}</p>
                   ))}
@@ -197,8 +197,8 @@ export default async function AboutPage() {
 
               {/* Keywords */}
               {profile?.keywords && profile.keywords.length > 0 && (
-                <div className="border-t border-navy-900/08 pt-8">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+                <div className="border-t border-[#292724]/08 pt-8">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#292724]/40 mb-4">
                     Core Focus & Competencies
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -210,7 +210,7 @@ export default async function AboutPage() {
               )}
 
               {/* CTAs */}
-              <div className="border-t border-navy-900/08 pt-8 flex flex-wrap gap-3">
+              <div className="border-t border-[#292724]/08 pt-8 flex flex-wrap gap-3">
                 <Link href="/projects" className="btn-navy">
                   View Case Studies →
                 </Link>
@@ -228,25 +228,25 @@ export default async function AboutPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          PM APPROACH — Dark Navy
+          PM APPROACH — Muted Sage Grey
       ══════════════════════════════════════════════════ */}
-      <section className="section-dark py-20">
+      <section className="section-sage py-20">
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-12">
-            <span className="section-label-dark mb-4 block w-fit">PM Philosophy</span>
-            <h2 className="text-3xl font-bold tracking-tight text-white">
+            <span className="section-label-light mb-4 block w-fit">PM Philosophy</span>
+            <h2 className="text-3xl font-bold tracking-tight text-[#292724]">
               How I Build Products
             </h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-3">
             {pmApproach.map((item) => (
-              <div key={item.title} className="card-dark p-6 space-y-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-teal-400/20 bg-teal-400/8 text-teal-400">
+              <div key={item.title} className="card-sage p-6 space-y-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#590907]/18 bg-[#590907]/08 text-[#590907]">
                   {item.icon}
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs sm:text-sm leading-relaxed text-zinc-400">{item.desc}</p>
+                  <h3 className="text-sm font-semibold text-[#292724] mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm leading-relaxed text-[#292724]/65">{item.desc}</p>
                 </div>
               </div>
             ))}
