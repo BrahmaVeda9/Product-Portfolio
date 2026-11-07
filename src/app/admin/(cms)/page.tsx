@@ -47,10 +47,10 @@ export default async function AdminDashboard() {
     <div className="space-y-8 pt-16 lg:pt-0">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-black" style={{ color: '#E8D2B5' }}>
+        <h1 className="text-3xl font-black text-white">
           Welcome back{stats.profile?.full_name ? `, ${stats.profile.full_name.split(' ')[0]}` : ''}! 👋
         </h1>
-        <p className="mt-1" style={{ color: 'rgba(232,210,181,0.5)' }}>
+        <p className="mt-1 text-zinc-500">
           {stats.profile?.headline ?? 'Manage your portfolio from here.'}
         </p>
       </div>
@@ -58,37 +58,37 @@ export default async function AdminDashboard() {
       {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="stat-card">
-          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(232,210,181,0.5)' }}>Total Projects</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Total Projects</p>
           <p className="text-3xl font-black gradient-text">{stats.totalProjects}</p>
         </div>
         <div className="stat-card">
-          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(232,210,181,0.5)' }}>Published</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Published</p>
           <p className="text-3xl font-black text-green-400">{stats.publishedProjects}</p>
         </div>
         <div className="stat-card">
-          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(232,210,181,0.5)' }}>Drafts</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Drafts</p>
           <p className="text-3xl font-black text-amber-400">{stats.draftProjects}</p>
         </div>
         <div className="stat-card">
-          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(232,210,181,0.5)' }}>Skills Listed</p>
-          <p className="text-3xl font-black" style={{ color: '#E8D2B5' }}>{stats.skillsCount}</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Skills Listed</p>
+          <p className="text-3xl font-black text-accent-400">{stats.skillsCount}</p>
         </div>
       </div>
 
       {/* Quick actions */}
       <div>
-        <h2 className="mb-4 text-lg font-bold" style={{ color: '#E8D2B5' }}>Quick Actions</h2>
+        <h2 className="mb-4 text-lg font-bold text-white">Quick Actions</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {quickLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="glass-card flex flex-col gap-3 p-5 transition-all duration-300 hover:-translate-y-1"
+              className="glass-card flex flex-col gap-3 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brand-500/30"
             >
               <span className="text-3xl">{link.icon}</span>
               <div>
-                <p className="font-semibold" style={{ color: '#E8D2B5' }}>{link.label}</p>
-                <p className="mt-0.5 text-xs" style={{ color: 'rgba(232,210,181,0.45)' }}>{link.desc}</p>
+                <p className="font-semibold text-white">{link.label}</p>
+                <p className="mt-0.5 text-xs text-zinc-500">{link.desc}</p>
               </div>
             </Link>
           ))}
@@ -97,8 +97,8 @@ export default async function AdminDashboard() {
 
       {/* Content checklist */}
       <div>
-        <h2 className="mb-4 text-lg font-bold" style={{ color: '#E8D2B5' }}>Content Checklist</h2>
-        <div className="glass-card divide-y overflow-hidden p-0" style={{ borderColor: 'rgba(232,210,181,0.08)' }}>
+        <h2 className="mb-4 text-lg font-bold text-white">Content Checklist</h2>
+        <div className="glass-card divide-y divide-brand-900/20 p-0 overflow-hidden">
           {[
             {
               done: !!(stats.profile?.full_name && stats.profile?.headline),
@@ -124,17 +124,17 @@ export default async function AdminDashboard() {
             <Link
               key={item.label}
               href={item.link}
-              className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-[rgba(232,210,181,0.04)]"
+              className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-brand-900/20"
             >
               <div className="flex items-center gap-3">
-                <span className={`text-lg ${item.done ? 'text-green-400' : 'text-[rgba(232,210,181,0.25)]'}`}>
+                <span className={`text-lg ${item.done ? 'text-green-400' : 'text-zinc-600'}`}>
                   {item.done ? '✅' : '⭕'}
                 </span>
-                <span className={`text-sm ${item.done ? 'text-[rgba(232,210,181,0.8)]' : 'text-[rgba(232,210,181,0.4)]'}`}>
+                <span className={`text-sm ${item.done ? 'text-zinc-300' : 'text-zinc-500'}`}>
                   {item.label}
                 </span>
               </div>
-              <span className="text-xs" style={{ color: 'rgba(232,210,181,0.3)' }}>→</span>
+              <span className="text-xs text-zinc-600">→</span>
             </Link>
           ))}
         </div>
@@ -143,8 +143,8 @@ export default async function AdminDashboard() {
       {/* Portfolio preview link */}
       <div className="glass-card flex items-center justify-between p-5">
         <div>
-          <p className="font-semibold" style={{ color: '#E8D2B5' }}>Preview your portfolio</p>
-          <p className="text-sm" style={{ color: 'rgba(232,210,181,0.45)' }}>See how your portfolio looks to visitors.</p>
+          <p className="font-semibold text-white">Preview your portfolio</p>
+          <p className="text-sm text-zinc-500">See how your portfolio looks to visitors.</p>
         </div>
         <a href="/" target="_blank" rel="noopener noreferrer" className="btn-secondary text-sm">
           Open Portfolio ↗
