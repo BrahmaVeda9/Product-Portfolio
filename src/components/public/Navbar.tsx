@@ -16,11 +16,11 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname  = usePathname();
-  const [scrolled,    setScrolled]    = useState(false);
-  const [mobileOpen,  setMobileOpen]  = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -30,30 +30,29 @@ export default function Navbar() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300',
         scrolled
-          ? 'border-b border-[#E8D2B5]/10 bg-[#590907]/95 backdrop-blur-2xl shadow-lg shadow-[#590907]/20'
+          ? 'border-b border-[#A5A79B]/35 bg-[#E8D2B5]/90 backdrop-blur-md shadow-sm'
           : 'bg-transparent'
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
 
-        {/* ── Logo ── */}
-        <Link
-          href="/"
-          className="group flex items-center gap-3"
-        >
-          {/* Monogram */}
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl overflow-hidden">
-            <span className="absolute inset-0 bg-[#E8D2B5]" />
-            <span className="relative text-sm font-black text-[#590907] leading-none">PM</span>
+        {/* ── Brand Logo ── */}
+        <Link href="/" className="group flex items-center gap-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#590907] text-[#E8D2B5] font-black text-xs tracking-wider shadow-sm transition-transform duration-200 group-hover:scale-105">
+            PM
           </span>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold text-[#E8D2B5] tracking-tight">Product Portfolio</span>
-            <span className="text-[10px] font-medium text-[#E8D2B5]/50 tracking-wide">AI · GenAI · Enterprise SaaS</span>
+            <span className="text-sm font-bold tracking-tight text-[#292724]">
+              Portfolio
+            </span>
+            <span className="text-[11px] font-medium text-[#292724]/60">
+              Product Leadership
+            </span>
           </div>
         </Link>
 
-        {/* ── Desktop Nav ── */}
-        <nav className="hidden items-center gap-0.5 rounded-full border border-[#E8D2B5]/10 bg-[#E8D2B5]/5 p-1.5 backdrop-blur-md md:flex">
+        {/* ── Desktop Navigation ── */}
+        <nav className="hidden md:flex items-center gap-1 rounded-full border border-[#A5A79B]/40 bg-[#E8D2B5]/60 p-1.5 backdrop-blur-sm">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -61,42 +60,39 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'relative rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all duration-200',
+                  'relative rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-200',
                   isActive
-                    ? 'bg-[#E8D2B5]/15 text-[#E8D2B5] shadow-sm'
-                    : 'text-[#E8D2B5]/60 hover:text-[#E8D2B5] hover:bg-[#E8D2B5]/08'
+                    ? 'bg-[#590907] text-[#E8D2B5] shadow-sm'
+                    : 'text-[#292724]/75 hover:text-[#590907] hover:bg-[#A5A79B]/20'
                 )}
               >
                 {link.label}
-                {isActive && (
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#E8D2B5]/70" />
-                )}
               </Link>
             );
           })}
         </nav>
 
-        {/* ── CTA ── */}
-        <div className="hidden items-center gap-3 md:flex">
+        {/* ── Desktop CTAs ── */}
+        <div className="hidden md:flex items-center gap-3">
           <Link
             href="/about#resume"
-            className="rounded-full border border-[#E8D2B5]/15 bg-[#E8D2B5]/06 px-4 py-2 text-xs font-medium text-[#E8D2B5]/70 hover:text-[#E8D2B5] hover:bg-[#E8D2B5]/12 transition-all"
+            className="rounded-full border border-[#A5A79B]/45 bg-[#E8D2B5]/50 px-4 py-2 text-xs font-semibold text-[#292724] hover:border-[#590907] hover:text-[#590907] transition-all"
           >
-            Resume / CV
+            Resume
           </Link>
           <Link
             href="/contact"
-            className="btn-gold text-xs px-5 py-2"
+            className="btn-burgundy text-xs py-2 px-5"
           >
-            Get In Touch →
+            Get In Touch
           </Link>
         </div>
 
-        {/* ── Mobile hamburger ── */}
+        {/* ── Mobile Hamburger ── */}
         <button
-          className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#E8D2B5]/12 bg-[#E8D2B5]/06 text-[#E8D2B5]/70 transition-colors hover:text-[#E8D2B5] md:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#A5A79B]/50 bg-[#E8D2B5] text-[#292724] transition-colors md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          aria-label="Toggle navigation"
         >
           <div className="flex flex-col gap-1.5">
             <span className={cn('h-0.5 w-4 bg-current transition-all duration-300', mobileOpen && 'translate-y-2 rotate-45')} />
@@ -106,39 +102,39 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* ── Mobile dropdown ── */}
+      {/* ── Mobile Dropdown ── */}
       {mobileOpen && (
-        <div className="border-b border-[#E8D2B5]/08 bg-[#590907]/97 px-6 py-5 backdrop-blur-2xl md:hidden">
-          <nav className="flex flex-col gap-1">
+        <div className="border-b border-[#A5A79B]/30 bg-[#E8D2B5] px-6 py-5 shadow-lg md:hidden">
+          <nav className="flex flex-col gap-1.5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'rounded-xl px-4 py-2.5 text-sm font-medium transition-all',
+                  'rounded-xl px-4 py-2.5 text-sm font-semibold transition-all',
                   pathname === link.href
-                    ? 'bg-[#E8D2B5]/12 text-[#E8D2B5]'
-                    : 'text-[#E8D2B5]/55 hover:bg-[#E8D2B5]/06 hover:text-[#E8D2B5]'
+                    ? 'bg-[#590907] text-[#E8D2B5]'
+                    : 'text-[#292724]/80 hover:bg-[#A5A79B]/20 hover:text-[#590907]'
                 )}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="mt-3 pt-3 border-t border-[#E8D2B5]/08 flex flex-col gap-2">
+            <div className="mt-3 pt-3 border-t border-[#A5A79B]/30 flex flex-col gap-2">
               <Link
                 href="/about#resume"
                 onClick={() => setMobileOpen(false)}
-                className="rounded-xl border border-[#E8D2B5]/12 bg-[#E8D2B5]/06 px-4 py-2.5 text-center text-sm font-medium text-[#E8D2B5]/70 hover:text-[#E8D2B5]"
+                className="rounded-xl border border-[#A5A79B]/40 bg-[#A5A79B]/15 px-4 py-2.5 text-center text-sm font-semibold text-[#292724]"
               >
                 Resume / CV
               </Link>
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="btn-gold justify-center text-xs py-2.5"
+                className="btn-burgundy justify-center text-sm py-2.5"
               >
-                Get In Touch →
+                Get In Touch
               </Link>
             </div>
           </nav>

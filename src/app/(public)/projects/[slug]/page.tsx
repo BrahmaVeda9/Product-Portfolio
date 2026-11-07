@@ -53,12 +53,12 @@ function Section({
 }) {
   if (!content) return null;
   return (
-    <div className="card-light p-7 sm:p-9 space-y-4 shadow-[0_4px_24px_rgba(41,39,36,0.08)]">
-      <div className="flex items-center gap-3 border-b border-[#292724]/07 pb-3 mb-2">
-        <span className="font-mono text-xs text-[#590907] font-bold">{number}</span>
-        <h2 className="text-lg font-bold tracking-tight text-[#292724]">{title}</h2>
+    <div className="card-cream p-7 sm:p-9 space-y-4">
+      <div className="flex items-center gap-3 border-b border-[#A5A79B]/25 pb-3 mb-2">
+        <span className="font-mono text-xs text-[#590907] font-bold tracking-wider">{number}</span>
+        <h2 className="text-xl font-bold tracking-tight text-[#292724]">{title}</h2>
       </div>
-      <div className="space-y-4 text-base leading-relaxed text-[#292724]/65">
+      <div className="space-y-4 text-base leading-relaxed text-[#292724]/80">
         {content.split('\n\n').map((para, i) => (
           <p key={i}>{para}</p>
         ))}
@@ -76,55 +76,52 @@ export default async function CaseStudyPage({ params }: Props) {
   return (
     <>
       {/* ══════════════════════════════════════════════════
-          HEADER — Deep Burgundy
+          CASE STUDY HEADER — Warm Cream Beige (#E8D2B5)
       ══════════════════════════════════════════════════ */}
-      <section className="section-dark relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#7a0c0a]/30 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-4xl px-6">
+      <section className="bg-[#E8D2B5] pt-32 pb-16 sm:pt-40 sm:pb-20 border-b border-[#A5A79B]/30">
+        <div className="mx-auto max-w-4xl px-6">
           {/* Breadcrumb */}
-          <div className="mb-8 flex items-center gap-2 text-xs font-mono text-[#E8D2B5]/40">
-            <Link href="/" className="hover:text-[#E8D2B5] transition-colors">Home</Link>
+          <div className="mb-6 flex items-center gap-2 text-xs font-mono text-[#292724]/60">
+            <Link href="/" className="hover:text-[#590907] transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/projects" className="hover:text-[#E8D2B5] transition-colors">Projects</Link>
+            <Link href="/projects" className="hover:text-[#590907] transition-colors">Projects</Link>
             <span>/</span>
-            <span className="text-[#E8D2B5]/65 truncate max-w-xs">{project.title}</span>
+            <span className="text-[#590907] font-bold truncate max-w-xs">{project.title}</span>
           </div>
 
           {/* Badges */}
-          <div className="flex flex-wrap items-center gap-2.5 mb-5">
-            {project.category && <span className="badge-dark">{project.category}</span>}
-            {project.featured && <span className="badge-dark">★ Featured Case Study</span>}
-            <span className="text-xs font-mono text-[#E8D2B5]/35">
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            {project.category && <span className="badge-burgundy">{project.category}</span>}
+            {project.featured && <span className="badge-burgundy bg-[#590907] text-[#E8D2B5]">★ Featured Case Study</span>}
+            <span className="text-xs font-mono text-[#292724]/50 ml-1">
               {formatDate(project.created_at, { year: 'numeric', month: 'long' })}
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#E8D2B5] leading-tight mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-[#292724] leading-tight mb-4">
             {project.title}
           </h1>
 
           {project.short_desc && (
-            <p className="text-lg sm:text-xl leading-relaxed text-[#E8D2B5]/65 font-normal max-w-2xl">
+            <p className="text-lg sm:text-xl leading-relaxed text-[#292724]/75 font-normal max-w-2xl">
               {project.short_desc}
             </p>
           )}
 
           {/* Metadata bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#E8D2B5]/08 mt-8 pt-6 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#A5A79B]/30 mt-8 pt-6 text-xs">
             <div className="flex items-center gap-8">
               {project.role && (
                 <div>
-                  <span className="text-[#E8D2B5]/35 uppercase tracking-wider block text-[10px] font-mono mb-0.5">Role</span>
-                  <span className="text-[#E8D2B5]/85 font-medium">{project.role}</span>
+                  <span className="text-[#292724]/50 uppercase tracking-wider block text-[10px] font-mono mb-0.5">Role</span>
+                  <span className="text-[#292724] font-bold">{project.role}</span>
                 </div>
               )}
               {project.category && (
                 <div>
-                  <span className="text-[#E8D2B5]/35 uppercase tracking-wider block text-[10px] font-mono mb-0.5">Domain</span>
-                  <span className="text-[#E8D2B5]/85 font-medium">{project.category}</span>
+                  <span className="text-[#292724]/50 uppercase tracking-wider block text-[10px] font-mono mb-0.5">Domain</span>
+                  <span className="text-[#292724] font-bold">{project.category}</span>
                 </div>
               )}
             </div>
@@ -136,7 +133,7 @@ export default async function CaseStudyPage({ params }: Props) {
                   href={project.project_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-ghost-dark text-xs py-2 px-4"
+                  className="btn-burgundy text-xs py-2 px-4"
                 >
                   Live Product ↗
                 </a>
@@ -146,9 +143,9 @@ export default async function CaseStudyPage({ params }: Props) {
                   href={(project as any).prototype_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-ghost-dark text-xs py-2 px-4"
+                  className="btn-outline-burgundy text-xs py-2 px-4"
                 >
-                  🧪 View Prototype ↗
+                  🧪 Interactive Prototype ↗
                 </a>
               )}
               {(project as any).case_study_pdf_url && (
@@ -156,7 +153,7 @@ export default async function CaseStudyPage({ params }: Props) {
                   href={(project as any).case_study_pdf_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-cream text-xs py-2 px-4"
+                  className="btn-subtle text-xs py-2 px-4"
                 >
                   📄 Download PDF ↓
                 </a>
@@ -167,13 +164,13 @@ export default async function CaseStudyPage({ params }: Props) {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          CONTENT — Warm Cream Beige
+          CASE STUDY CONTENT — Warm Cream Beige (#E8D2B5)
       ══════════════════════════════════════════════════ */}
-      <section className="section-light py-16">
+      <section className="bg-[#E8D2B5] py-16">
         <div className="mx-auto max-w-4xl px-6">
-          {/* Hero Thumbnail */}
+          {/* Main Thumbnail */}
           {project.thumbnail_url && (
-            <div className="relative mb-12 h-80 sm:h-96 w-full overflow-hidden rounded-2xl border border-[#292724]/08 bg-[#E8D2B5] shadow-[0_8px_32px_rgba(41,39,36,0.1)]">
+            <div className="relative mb-12 h-80 sm:h-96 w-full overflow-hidden rounded-2xl border border-[#A5A79B]/35 shadow-md bg-white">
               <Image
                 src={project.thumbnail_url}
                 alt={project.title}
@@ -185,21 +182,21 @@ export default async function CaseStudyPage({ params }: Props) {
           )}
 
           {/* Case Study Sections */}
-          <div className="space-y-5">
+          <div className="space-y-6">
             <Section number="01" title="Problem Framing & Opportunity" content={project.problem} />
             <Section number="02" title="Product Strategy & Approach" content={project.approach} />
-            <Section number="03" title="Trade-offs & Strategic Decisions" content={project.decisions} />
-            <Section number="04" title="Solution & System Architecture" content={project.solution} />
-            <Section number="05" title="Delivered Metrics & Outcomes" content={project.outcomes} />
+            <Section number="03" title="Trade-offs & Architectural Decisions" content={project.decisions} />
+            <Section number="04" title="System Solution & Delivery" content={project.solution} />
+            <Section number="05" title="Delivered Metrics & Impact" content={project.outcomes} />
 
-            {/* Full narrative */}
+            {/* Full narrative retrospective */}
             {project.case_studies?.content && (
-              <div className="card-light p-7 sm:p-9 space-y-4 shadow-[0_4px_24px_rgba(41,39,36,0.08)]">
-                <div className="flex items-center gap-3 border-b border-[#292724]/07 pb-3 mb-2">
+              <div className="card-cream p-7 sm:p-9 space-y-4">
+                <div className="flex items-center gap-3 border-b border-[#A5A79B]/25 pb-3 mb-2">
                   <span className="font-mono text-xs text-[#590907] font-bold">06</span>
-                  <h2 className="text-lg font-bold tracking-tight text-[#292724]">In-Depth Retrospective</h2>
+                  <h2 className="text-xl font-bold tracking-tight text-[#292724]">In-Depth Retrospective</h2>
                 </div>
-                <div className="space-y-4 text-base leading-relaxed text-[#292724]/65">
+                <div className="space-y-4 text-base leading-relaxed text-[#292724]/80">
                   {project.case_studies.content.split('\n\n').map((para, i) => (
                     <p key={i}>{para}</p>
                   ))}
@@ -208,29 +205,29 @@ export default async function CaseStudyPage({ params }: Props) {
             )}
           </div>
 
-          {/* Skills */}
-          {project.skills.length > 0 && (
-            <div className="mt-12 border-t border-[#292724]/07 pt-8">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#292724]/40 mb-4">
-                Technologies & Methodologies
+          {/* Associated Skills */}
+          {project.skills && project.skills.length > 0 && (
+            <div className="mt-12 border-t border-[#A5A79B]/30 pt-8">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#590907] mb-4">
+                Core Competencies & Technologies
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.skills.map((skill) => (
-                  <span key={skill} className="badge-light">{skill}</span>
+                  <span key={skill} className="badge-cream font-medium">{skill}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Gallery */}
+          {/* Artifacts Gallery */}
           {project.gallery_urls && project.gallery_urls.length > 0 && (
-            <div className="mt-12 border-t border-[#292724]/07 pt-8">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#292724]/40 mb-6">
+            <div className="mt-12 border-t border-[#A5A79B]/30 pt-8">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#590907] mb-6">
                 Product Artifacts & Interface Gallery
               </h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 {project.gallery_urls.map((url, i) => (
-                  <div key={i} className="relative h-56 overflow-hidden rounded-xl border border-[#292724]/08 bg-[#E8D2B5] shadow-[0_4px_16px_rgba(41,39,36,0.08)]">
+                  <div key={i} className="relative h-60 overflow-hidden rounded-xl border border-[#A5A79B]/30 bg-white shadow-sm">
                     <Image
                       src={url}
                       alt={`${project.title} artifact ${i + 1}`}
@@ -243,13 +240,13 @@ export default async function CaseStudyPage({ params }: Props) {
             </div>
           )}
 
-          {/* Back navigation */}
-          <div className="mt-14 border-t border-[#292724]/07 pt-8 flex items-center justify-between">
-            <Link href="/projects" className="btn-ghost-light">
+          {/* Navigation */}
+          <div className="mt-14 border-t border-[#A5A79B]/30 pt-8 flex items-center justify-between">
+            <Link href="/projects" className="btn-subtle text-xs">
               ← All Case Studies
             </Link>
-            <Link href="/contact" className="btn-navy">
-              Discuss This Work →
+            <Link href="/contact" className="btn-burgundy text-xs">
+              Discuss This Case Study →
             </Link>
           </div>
         </div>
