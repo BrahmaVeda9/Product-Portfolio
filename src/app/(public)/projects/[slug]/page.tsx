@@ -191,21 +191,6 @@ export default async function CaseStudyPage({ params }: Props) {
             <Section number="03" title="Trade-offs & Strategic Decisions" content={project.decisions} />
             <Section number="04" title="Solution & System Architecture" content={project.solution} />
             <Section number="05" title="Delivered Metrics & Outcomes" content={project.outcomes} />
-
-            {/* Full narrative */}
-            {project.case_studies?.content && (
-              <div className="card-light p-7 sm:p-9 space-y-4 shadow-card">
-                <div className="flex items-center gap-3 border-b border-navy-900/07 pb-3 mb-2">
-                  <span className="font-mono text-xs text-teal-500 font-bold">06</span>
-                  <h2 className="text-lg font-bold tracking-tight text-navy-900">In-Depth Retrospective</h2>
-                </div>
-                <div className="space-y-4 text-base leading-relaxed text-slate-600">
-                  {project.case_studies.content.split('\n\n').map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Skills */}
