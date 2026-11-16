@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 import type { Project, ProjectCategory } from '@/types/database.types';
@@ -9,7 +9,7 @@ import { slugify } from '@/lib/utils';
 const CATEGORIES: ProjectCategory[] = ['AI/GenAI', 'SaaS', 'ERP', 'Automation', 'Other'];
 
 interface ProjectFormProps {
-  project?: Project | (Project & { case_studies?: { content?: string | null; meta_title?: string | null; meta_description?: string | null } | null });
+  project?: Project;
   userId: string;
   onSaved: (project: Project) => void;
 }
@@ -19,9 +19,6 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
   const thumbnailRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-
-  // Extract initial case study data if editing an existing project with joined case_studies
-  const caseStudyData = (project as any)?.case_studies;
 
   const [form, setForm] = useState({
     title: project?.title ?? '',
@@ -43,41 +40,11 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
     featured: project?.featured ?? false,
     status: project?.status ?? 'draft',
     display_order: project?.display_order ?? 0,
-    // Case study fields (06 In-Depth Retrospective & SEO)
-    cs_content: caseStudyData?.content ?? '',
-    cs_meta_title: caseStudyData?.meta_title ?? '',
-    cs_meta_description: caseStudyData?.meta_description ?? '',
+    // Case study fields
+    cs_content: '',
+    cs_meta_title: '',
+    cs_meta_description: '',
   });
-
-  useEffect(() => {
-    // If project already loaded with case_studies
-    if ((project as any)?.case_studies) {
-      const cs = (project as any).case_studies;
-      setForm((prev) => ({
-        ...prev,
-        cs_content: cs.content ?? prev.cs_content,
-        cs_meta_title: cs.meta_title ?? prev.cs_meta_title,
-        cs_meta_description: cs.meta_description ?? prev.cs_meta_description,
-      }));
-    } else if (project?.id) {
-      // Fetch case study for this project if not already provided
-      supabase
-        .from('case_studies')
-        .select('*')
-        .eq('project_id', project.id)
-        .maybeSingle()
-        .then(({ data }) => {
-          if (data) {
-            setForm((prev) => ({
-              ...prev,
-              cs_content: data.content ?? prev.cs_content,
-              cs_meta_title: data.meta_title ?? prev.cs_meta_title,
-              cs_meta_description: data.meta_description ?? prev.cs_meta_description,
-            }));
-          }
-        });
-    }
-  }, [project?.id]);
 
   // Auto-generate slug from title
   const handleTitleChange = (title: string) => {
@@ -400,17 +367,14 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
         </p>
 
         {[
-          { number: '01', key: 'problem', label: '01. Problem Framing & Opportunity', placeholder: 'What problem were you solving? Who was affected?' },
-          { number: '02', key: 'approach', label: '02. Product Strategy & Approach', placeholder: 'How did you approach this problem? What frameworks or methods did you use?' },
-          { number: '03', key: 'decisions', label: '03. Trade-offs & Strategic Decisions', placeholder: 'What key decisions did you make? What were the trade-offs?' },
-          { number: '04', key: 'solution', label: '04. Solution & System Architecture', placeholder: 'What did you build or ship? What was the final solution?' },
-          { number: '05', key: 'outcomes', label: '05. Delivered Metrics & Outcomes', placeholder: 'What were the measurable results? Include metrics, KPIs, and business impact.' },
-        ].map(({ number, key, label, placeholder }) => (
+          { key: 'problem', label: '🎯 The Problem', placeholder: 'What problem were you solving? Who was affected?' },
+          { key: 'approach', label: '🧭 Approach & Strategy', placeholder: 'How did you approach this problem? What frameworks or methods did you use?' },
+          { key: 'decisions', label: '⚖️ Decisions & Trade-offs', placeholder: 'What key decisions did you make? What were the trade-offs?' },
+          { key: 'solution', label: '✅ Solution', placeholder: 'What did you build or ship? What was the final solution?' },
+          { key: 'outcomes', label: '📊 Outcomes & Metrics', placeholder: 'What were the measurable results? Include metrics, KPIs, and business impact.' },
+        ].map(({ key, label, placeholder }) => (
           <div key={key}>
-            <label className="mb-2 block text-sm font-medium text-zinc-300">
-              <span className="font-mono text-xs text-brand-400 mr-2">{number}</span>
-              {label}
-            </label>
+            <label className="mb-2 block text-sm font-medium text-zinc-300">{label}</label>
             <textarea
               className="textarea"
               rows={4}
@@ -422,14 +386,11 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
         ))}
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-zinc-300">
-            <span className="font-mono text-xs text-brand-400 mr-2">06</span>
-            06. In-Depth Retrospective
-          </label>
+          <label className="mb-2 block text-sm font-medium text-zinc-300">📖 Additional Case Study Content</label>
           <textarea
             className="textarea"
             rows={8}
-            placeholder="Full narrative retrospective, additional context, or deeper case study learnings…"
+            placeholder="Full narrative, additional context, or longer case study content…"
             value={form.cs_content}
             onChange={(e) => setForm({ ...form, cs_content: e.target.value })}
           />
