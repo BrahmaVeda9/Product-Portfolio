@@ -49,9 +49,9 @@ function Section({
 }: {
   number: string;
   title: string;
-  content: string | null;
+  content: string | null | undefined;
 }) {
-  if (!content) return null;
+  if (!content || !content.trim()) return null;
   return (
     <div className="card-light p-7 sm:p-9 space-y-4 shadow-card">
       <div className="flex items-center gap-3 border-b border-navy-900/07 pb-3 mb-2">
@@ -186,11 +186,20 @@ export default async function CaseStudyPage({ params }: Props) {
 
           {/* Case Study Sections */}
           <div className="space-y-5">
-            <Section number="01" title="Problem Framing & Opportunity" content={project.problem} />
-            <Section number="02" title="Product Strategy & Approach" content={project.approach} />
-            <Section number="03" title="Trade-offs & Strategic Decisions" content={project.decisions} />
-            <Section number="04" title="Solution & System Architecture" content={project.solution} />
-            <Section number="05" title="Delivered Metrics & Outcomes" content={project.outcomes} />
+            <Section number="01" title="The Problem" content={project.problem} />
+            <Section number="02" title="Approach & Strategy" content={project.approach} />
+            <Section number="03" title="Decisions & Trade-offs" content={project.decisions} />
+            <Section number="04" title="Solution" content={project.solution} />
+            <Section number="05" title="Outcomes & Metrics" content={project.outcomes} />
+            <Section
+              number="06"
+              title="Additional Case Study Content"
+              content={
+                Array.isArray(project.case_studies)
+                  ? (project.case_studies[0] as any)?.content
+                  : project.case_studies?.content
+              }
+            />
           </div>
 
           {/* Skills */}

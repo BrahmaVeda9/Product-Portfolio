@@ -3,13 +3,13 @@
 import { useState, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
-import type { Project, ProjectCategory } from '@/types/database.types';
+import type { Project, ProjectCategory, ProjectWithCaseStudy } from '@/types/database.types';
 import { slugify } from '@/lib/utils';
 
 const CATEGORIES: ProjectCategory[] = ['AI/GenAI', 'SaaS', 'ERP', 'Automation', 'Other'];
 
 interface ProjectFormProps {
-  project?: Project;
+  project?: Project | ProjectWithCaseStudy;
   userId: string;
   onSaved: (project: Project) => void;
 }
@@ -19,6 +19,9 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
   const thumbnailRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+
+  const cs = (project as ProjectWithCaseStudy | undefined)?.case_studies;
+  const initialCaseStudy = Array.isArray(cs) ? cs[0] : cs;
 
   const [form, setForm] = useState({
     title: project?.title ?? '',
@@ -41,9 +44,9 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
     status: project?.status ?? 'draft',
     display_order: project?.display_order ?? 0,
     // Case study fields
-    cs_content: '',
-    cs_meta_title: '',
-    cs_meta_description: '',
+    cs_content: initialCaseStudy?.content ?? '',
+    cs_meta_title: initialCaseStudy?.meta_title ?? '',
+    cs_meta_description: initialCaseStudy?.meta_description ?? '',
   });
 
   // Auto-generate slug from title
@@ -168,14 +171,14 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
       savedProject = res.data as Project;
     }
 
-    // Upsert case study if content provided
-    if (form.cs_content || form.cs_meta_title || form.cs_meta_description) {
+    // Upsert case study if content provided or if updating existing case study
+    if (form.cs_content || form.cs_meta_title || form.cs_meta_description || initialCaseStudy) {
       await supabase.from('case_studies').upsert({
         project_id: savedProject.id,
         content: form.cs_content || null,
         meta_title: form.cs_meta_title || null,
         meta_description: form.cs_meta_description || null,
-      });
+      }, { onConflict: 'project_id' });
     }
 
     toast.success(finalStatus === 'published' ? 'Project published!' : 'Draft saved!');
