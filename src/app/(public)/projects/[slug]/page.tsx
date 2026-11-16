@@ -60,7 +60,7 @@ function Section({
       </div>
       <div className="space-y-4 text-base leading-relaxed text-slate-600">
         {content.split('\n\n').map((para, i) => (
-          <p key={i}>{para}</p>
+          <p key={i} className="whitespace-pre-line">{para}</p>
         ))}
       </div>
     </div>

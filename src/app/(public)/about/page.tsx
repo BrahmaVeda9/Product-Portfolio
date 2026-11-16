@@ -190,7 +190,7 @@ export default async function AboutPage() {
                 </h2>
                 <div className="space-y-4 text-base leading-relaxed text-slate-600">
                   {paragraphs.map((para, i) => (
-                    <p key={i}>{para}</p>
+                    <p key={i} className="whitespace-pre-line">{para}</p>
                   ))}
                 </div>
               </div>
