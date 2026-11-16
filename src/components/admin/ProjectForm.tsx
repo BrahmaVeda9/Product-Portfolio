@@ -17,11 +17,80 @@ interface ProjectFormProps {
 export default function ProjectForm({ project, userId, onSaved }: ProjectFormProps) {
   const supabase = createClient();
   const thumbnailRef = useRef<HTMLInputElement>(null);
+  const textareaRefs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({});
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   const cs = (project as ProjectWithCaseStudy | undefined)?.case_studies;
   const initialCaseStudy = Array.isArray(cs) ? cs[0] : cs;
+
+  const insertFormatting = (key: string, prefix: string, suffix: string = prefix) => {
+    const el = textareaRefs.current[key];
+    if (!el) return;
+
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const val = (form[key as keyof typeof form] as string) || '';
+
+    const selectedText = val.substring(start, end);
+
+    // If already wrapped in prefix and suffix within the selection, unwrap
+    if (
+      selectedText.startsWith(prefix) &&
+      selectedText.endsWith(suffix) &&
+      selectedText.length >= prefix.length + suffix.length
+    ) {
+      const unwrapped = selectedText.slice(prefix.length, selectedText.length - suffix.length);
+      const newVal = val.substring(0, start) + unwrapped + val.substring(end);
+      setForm((prev) => ({ ...prev, [key]: newVal }));
+      setTimeout(() => {
+        el.focus();
+        el.setSelectionRange(start, start + unwrapped.length);
+      }, 0);
+      return;
+    }
+
+    // Check if surrounding text has prefix and suffix
+    const hasSurrounding =
+      start >= prefix.length &&
+      end + suffix.length <= val.length &&
+      val.substring(start - prefix.length, start) === prefix &&
+      val.substring(end, end + suffix.length) === suffix;
+
+    if (hasSurrounding) {
+      const newVal = val.substring(0, start - prefix.length) + selectedText + val.substring(end + suffix.length);
+      setForm((prev) => ({ ...prev, [key]: newVal }));
+      setTimeout(() => {
+        el.focus();
+        el.setSelectionRange(start - prefix.length, end - prefix.length);
+      }, 0);
+      return;
+    }
+
+    // Otherwise, wrap selection or insert placeholder
+    const replacement = `${prefix}${selectedText || 'Heading / Bold Text'}${suffix}`;
+    const newVal = val.substring(0, start) + replacement + val.substring(end);
+    setForm((prev) => ({ ...prev, [key]: newVal }));
+
+    setTimeout(() => {
+      el.focus();
+      if (selectedText) {
+        el.setSelectionRange(start + prefix.length, end + prefix.length);
+      } else {
+        el.setSelectionRange(start + prefix.length, start + prefix.length + 'Heading / Bold Text'.length);
+      }
+    }, 0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, key: string) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+      e.preventDefault();
+      insertFormatting(key, '**', '**');
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+      e.preventDefault();
+      insertFormatting(key, '*', '*');
+    }
+  };
 
   const [form, setForm] = useState({
     title: project?.title ?? '',
@@ -364,10 +433,21 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
 
       {/* Case Study Sections */}
       <div className="glass-card space-y-5 p-6">
-        <h2 className="font-bold text-white">Case Study Content</h2>
-        <p className="text-sm text-zinc-500">
-          Use double line breaks to separate paragraphs. These sections are displayed on the public project page.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-white/06 pb-4">
+          <div>
+            <h2 className="font-bold text-white">Case Study Content</h2>
+            <p className="text-sm text-zinc-500">
+              Use double line breaks to separate paragraphs. Use single line breaks for subheadings or lists.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-zinc-400 bg-zinc-800/60 px-3 py-1.5 rounded-lg border border-zinc-700/50">
+            <span>Shortcut:</span>
+            <kbd className="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-zinc-300 font-mono text-[11px]">Ctrl+B</kbd>
+            <span>bold</span>
+            <kbd className="px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-zinc-300 font-mono text-[11px]">Ctrl+I</kbd>
+            <span>italic</span>
+          </div>
+        </div>
 
         {[
           { key: 'problem', label: '🎯 The Problem', placeholder: 'What problem were you solving? Who was affected?' },
@@ -377,25 +457,69 @@ export default function ProjectForm({ project, userId, onSaved }: ProjectFormPro
           { key: 'outcomes', label: '📊 Outcomes & Metrics', placeholder: 'What were the measurable results? Include metrics, KPIs, and business impact.' },
         ].map(({ key, label, placeholder }) => (
           <div key={key}>
-            <label className="mb-2 block text-sm font-medium text-zinc-300">{label}</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-medium text-zinc-300">{label}</label>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  title="Bold selected text (Ctrl+B)"
+                  onClick={() => insertFormatting(key, '**', '**')}
+                  className="inline-flex items-center justify-center w-7 h-7 rounded text-xs font-bold text-zinc-300 bg-zinc-800 hover:bg-zinc-700 hover:text-white border border-zinc-700/80 transition-colors shadow-sm"
+                >
+                  B
+                </button>
+                <button
+                  type="button"
+                  title="Italic selected text (Ctrl+I)"
+                  onClick={() => insertFormatting(key, '*', '*')}
+                  className="inline-flex items-center justify-center w-7 h-7 rounded text-xs italic font-serif text-zinc-300 bg-zinc-800 hover:bg-zinc-700 hover:text-white border border-zinc-700/80 transition-colors shadow-sm"
+                >
+                  I
+                </button>
+              </div>
+            </div>
             <textarea
+              ref={(el) => { textareaRefs.current[key] = el; }}
               className="textarea"
               rows={4}
               placeholder={placeholder}
               value={form[key as keyof typeof form] as string}
               onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+              onKeyDown={(e) => handleKeyDown(e, key)}
             />
           </div>
         ))}
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-zinc-300">📖 Additional Case Study Content</label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-zinc-300">📖 Additional Case Study Content</label>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                title="Bold selected text (Ctrl+B)"
+                onClick={() => insertFormatting('cs_content', '**', '**')}
+                className="inline-flex items-center justify-center w-7 h-7 rounded text-xs font-bold text-zinc-300 bg-zinc-800 hover:bg-zinc-700 hover:text-white border border-zinc-700/80 transition-colors shadow-sm"
+              >
+                B
+              </button>
+              <button
+                type="button"
+                title="Italic selected text (Ctrl+I)"
+                onClick={() => insertFormatting('cs_content', '*', '*')}
+                className="inline-flex items-center justify-center w-7 h-7 rounded text-xs italic font-serif text-zinc-300 bg-zinc-800 hover:bg-zinc-700 hover:text-white border border-zinc-700/80 transition-colors shadow-sm"
+              >
+                I
+              </button>
+            </div>
+          </div>
           <textarea
+            ref={(el) => { textareaRefs.current['cs_content'] = el; }}
             className="textarea"
             rows={8}
             placeholder="Full narrative, additional context, or longer case study content…"
             value={form.cs_content}
             onChange={(e) => setForm({ ...form, cs_content: e.target.value })}
+            onKeyDown={(e) => handleKeyDown(e, 'cs_content')}
           />
         </div>
       </div>

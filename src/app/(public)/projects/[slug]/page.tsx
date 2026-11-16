@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate, absoluteUrl } from '@/lib/utils';
+import FormattedText from '@/components/FormattedText';
 import type { Metadata } from 'next';
 
 interface Props {
@@ -60,7 +61,9 @@ function Section({
       </div>
       <div className="space-y-4 text-base leading-relaxed text-slate-600">
         {content.split('\n\n').map((para, i) => (
-          <p key={i} className="whitespace-pre-line">{para}</p>
+          <p key={i} className="whitespace-pre-line">
+            <FormattedText text={para} />
+          </p>
         ))}
       </div>
     </div>

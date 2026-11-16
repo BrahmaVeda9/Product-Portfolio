@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import type { Profile } from '@/types/database.types';
 import Image from 'next/image';
 import Link from 'next/link';
+import FormattedText from '@/components/FormattedText';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -190,7 +191,9 @@ export default async function AboutPage() {
                 </h2>
                 <div className="space-y-4 text-base leading-relaxed text-slate-600">
                   {paragraphs.map((para, i) => (
-                    <p key={i} className="whitespace-pre-line">{para}</p>
+                    <p key={i} className="whitespace-pre-line">
+                      <FormattedText text={para} />
+                    </p>
                   ))}
                 </div>
               </div>
