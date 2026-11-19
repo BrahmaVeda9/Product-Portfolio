@@ -11,6 +11,7 @@ import { useState } from 'react';
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: '🏠', exact: true },
   { href: '/admin/profile', label: 'Profile', icon: '👤', exact: false },
+  { href: '/admin/resume', label: 'Resume / CV', icon: '📄', exact: false },
   { href: '/admin/projects', label: 'Projects', icon: '🚀', exact: false },
   { href: '/admin/experience', label: 'Experience', icon: '💼', exact: false },
   { href: '/admin/skills', label: 'Skills', icon: '🎯', exact: false },

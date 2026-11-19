@@ -20,7 +20,7 @@ async function getDashboardStats() {
     supabase.from('projects').select('*', { count: 'exact', head: true }).eq('status', 'draft'),
     supabase.from('experience').select('*', { count: 'exact', head: true }),
     supabase.from('skills').select('*', { count: 'exact', head: true }),
-    supabase.from('profiles').select('full_name, headline').limit(1).maybeSingle(),
+    supabase.from('profiles').select('full_name, headline, resume_url').limit(1).maybeSingle(),
   ]);
 
   return {
@@ -35,6 +35,7 @@ async function getDashboardStats() {
 
 const quickLinks = [
   { href: '/admin/profile', label: 'Edit Profile', icon: '👤', desc: 'Update headline, bio, and contact info' },
+  { href: '/admin/resume', label: 'Resume / CV', icon: '📄', desc: 'Upload and manage your Executive CV' },
   { href: '/admin/projects/new', label: 'New Project', icon: '➕', desc: 'Create a new case study' },
   { href: '/admin/experience', label: 'Experience', icon: '💼', desc: 'Manage work history' },
   { href: '/admin/skills', label: 'Skills', icon: '🎯', desc: 'Add and organize skills' },
@@ -78,7 +79,7 @@ export default async function AdminDashboard() {
       {/* Quick actions */}
       <div>
         <h2 className="mb-4 text-lg font-bold text-white">Quick Actions</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {quickLinks.map((link) => (
             <Link
               key={link.href}
@@ -104,6 +105,11 @@ export default async function AdminDashboard() {
               done: !!(stats.profile?.full_name && stats.profile?.headline),
               label: 'Profile configured',
               link: '/admin/profile',
+            },
+            {
+              done: !!(stats.profile as any)?.resume_url,
+              label: 'Resume / CV uploaded',
+              link: '/admin/resume',
             },
             {
               done: stats.publishedProjects > 0,

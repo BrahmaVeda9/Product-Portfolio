@@ -114,10 +114,15 @@ export default function AdminProfilePage() {
   const handleUpload = async (
     file: File,
     bucket: string,
-    path: string,
+    subfolder: string,
     field: keyof typeof form
   ) => {
+    if (!userId) return;
     setUploading(true);
+
+    const sanitized = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const path = `${userId}/${subfolder}/${Date.now()}-${sanitized}`;
+
     const { data, error } = await supabase.storage.from(bucket).upload(path, file, { upsert: true });
 
     if (error) {
@@ -128,7 +133,14 @@ export default function AdminProfilePage() {
 
     const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(data.path);
     setForm((prev) => ({ ...prev, [field]: publicUrl }));
-    toast.success('File uploaded!');
+
+    // Persist immediately to profile
+    await supabase.from('profiles').update({
+      [field]: publicUrl,
+      updated_at: new Date().toISOString(),
+    }).eq('id', userId);
+
+    toast.success('File uploaded and saved to profile!');
     setUploading(false);
   };
 
@@ -384,15 +396,19 @@ export default function AdminProfilePage() {
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file && userId)
-                  handleUpload(file, 'portfolio-assets', `${userId}/avatar/${file.name}`, 'avatar_url');
+                if (file) handleUpload(file, 'portfolio-assets', 'avatar', 'avatar_url');
               }}
             />
           </div>
 
           {/* Resume */}
           <div>
-            <label className="mb-2 block text-sm text-zinc-400">Resume PDF</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm text-zinc-400">Resume PDF</label>
+              <a href="/admin/resume" className="text-xs text-brand-400 hover:underline">
+                Open dedicated Resume Manager ↗
+              </a>
+            </div>
             {form.resume_url && (
               <a
                 href={form.resume_url}
@@ -427,8 +443,7 @@ export default function AdminProfilePage() {
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file && userId)
-                  handleUpload(file, 'portfolio-assets', `${userId}/resume/${file.name}`, 'resume_url');
+                if (file) handleUpload(file, 'portfolio-assets', 'resume', 'resume_url');
               }}
             />
           </div>

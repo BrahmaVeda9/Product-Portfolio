@@ -14,7 +14,11 @@ const navLinks = [
   { href: '/contact',    label: 'Contact' },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  resumeUrl?: string | null;
+}
+
+export default function Navbar({ resumeUrl }: NavbarProps) {
   const pathname  = usePathname();
   const [scrolled,    setScrolled]    = useState(false);
   const [mobileOpen,  setMobileOpen]  = useState(false);
@@ -78,12 +82,24 @@ export default function Navbar() {
 
         {/* ── CTA ── */}
         <div className="hidden items-center gap-3 md:flex">
-          <Link
-            href="/about#resume"
-            className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-all"
-          >
-            Resume / CV
-          </Link>
+          {resumeUrl ? (
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-all flex items-center gap-1.5"
+            >
+              <span>Resume / CV</span>
+              <span className="text-[10px] text-gold-400">↗</span>
+            </a>
+          ) : (
+            <Link
+              href="/about#resume"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-all"
+            >
+              Resume / CV
+            </Link>
+          )}
           <Link
             href="/contact"
             className="btn-gold text-xs px-5 py-2"
@@ -126,13 +142,26 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="mt-3 pt-3 border-t border-white/[0.08] flex flex-col gap-2">
-              <Link
-                href="/about#resume"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-center text-sm font-medium text-zinc-300 hover:text-white"
-              >
-                Resume / CV
-              </Link>
+              {resumeUrl ? (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-center text-sm font-medium text-zinc-300 hover:text-white flex items-center justify-center gap-1.5"
+                >
+                  <span>Download Resume / CV</span>
+                  <span className="text-xs text-gold-400">↗</span>
+                </a>
+              ) : (
+                <Link
+                  href="/about#resume"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-center text-sm font-medium text-zinc-300 hover:text-white"
+                >
+                  Resume / CV
+                </Link>
+              )}
               <Link
                 href="/contact"
                 onClick={() => setMobileOpen(false)}
