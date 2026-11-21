@@ -3,8 +3,6 @@ import type { Profile } from '@/types/database.types';
 import Image from 'next/image';
 import Link from 'next/link';
 import FormattedText from '@/components/FormattedText';
-import PageHeader from '@/components/public/PageHeader';
-import Reveal from '@/components/public/Reveal';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -64,151 +62,196 @@ export default async function AboutPage() {
     ? bioSource.split('\n\n').filter(Boolean)
     : defaultSummary;
 
-  const monogram = profile?.full_name
-    ? profile.full_name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase()
-    : 'PM';
 
   return (
     <>
-      <PageHeader
-        eyebrow="Leadership profile"
-        title={
-          <>
-            Product philosophy,{' '}
-            <span className="italic text-champagne">vision &amp; stewardship</span>
-          </>
-        }
-        intro="Delivering defensible market advantage by aligning organizational strategy with deep user empathy and technical precision."
-      />
+      {/* ══════════════════════════════════════════════════
+          ABOUT HEADER — Dark Navy
+      ══════════════════════════════════════════════════ */}
+      <section className="section-dark relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden">
+        {/* Background decoration */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-navy-800/50 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-teal-900/15 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-5xl px-6">
+          <span className="section-label-dark mb-4 block w-fit">Leadership Profile</span>
+          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight max-w-3xl">
+            Product Philosophy,<br />
+            <span className="text-gold-gradient">Vision & Stewardship</span>
+          </h1>
+          <p className="mt-5 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
+            Delivering defensible market advantage by aligning organizational strategy with deep user empathy and technical precision.
+          </p>
+        </div>
+      </section>
 
-      {/* ═════════════ PROFILE ═════════════ */}
-      <section className="pb-28 sm:pb-36">
-        <div className="lux-container grid items-start gap-16 lg:grid-cols-12 lg:gap-20">
-          {/* Portrait & details */}
-          <Reveal className="lg:col-span-5 lg:sticky lg:top-32">
-            <div className="relative mx-auto max-w-[24rem]">
-              <div className="arch relative aspect-[4/5] w-full bg-ink-850 border border-white/[0.06]">
-                {profile?.avatar_url ? (
-                  <>
+      {/* ══════════════════════════════════════════════════
+          ABOUT CONTENT — Light Ivory
+      ══════════════════════════════════════════════════ */}
+      <section className="section-light py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+
+            {/* ── Left: Portrait & Details ── */}
+            <div className="space-y-6 lg:col-span-5">
+              <div className="card-light overflow-hidden shadow-card">
+                <div className="relative aspect-[4/5] w-full bg-ivory-200">
+                  {profile?.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
                       alt={profile.full_name ?? 'Product Manager Portrait'}
                       fill
-                      sizes="(min-width: 1024px) 24rem, 80vw"
-                      className="object-cover grayscale-[25%] contrast-[1.05]"
+                      className="object-cover"
                       priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-transparent" />
-                  </>
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(80%_60%_at_50%_35%,rgba(201,169,110,0.18),transparent_70%)]">
-                    <span className="font-display text-[7rem] font-light italic leading-none text-champagne">{monogram}</span>
-                    <span className="label mt-6">{profile?.full_name || 'Product Executive'}</span>
-                  </div>
-                )}
+                  ) : (
+                    <div className="flex h-full w-full flex-col items-center justify-center p-8 bg-gradient-to-b from-ivory-200 to-ivory-300 text-center">
+                      <div className="h-24 w-24 rounded-2xl border-2 border-navy-900/10 bg-white flex items-center justify-center text-3xl font-black text-navy-900 shadow-card mb-4">
+                        {profile?.full_name ? profile.full_name.slice(0, 2).toUpperCase() : 'PM'}
+                      </div>
+                      <p className="text-sm font-semibold text-navy-900">
+                        {profile?.full_name || 'Product Executive'}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">Product Leadership</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Profile details strip */}
+                <div className="p-6 space-y-3 bg-white border-t border-navy-900/06">
+                  {profile?.location && (
+                    <div className="flex items-center gap-3 text-sm text-slate-500">
+                      <svg className="h-4 w-4 text-teal-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                      </svg>
+                      <span>{profile.location}</span>
+                    </div>
+                  )}
+                  {profile?.email && (
+                    <div className="flex items-center gap-3 text-sm text-slate-500">
+                      <svg className="h-4 w-4 text-teal-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                      </svg>
+                      <a href={`mailto:${profile.email}`} className="text-navy-800 hover:text-teal-600 transition-colors font-medium">
+                        {profile.email}
+                      </a>
+                    </div>
+                  )}
+                  {profile?.linkedin_url && (
+                    <div className="flex items-center gap-3 text-sm text-slate-500">
+                      <svg className="h-4 w-4 text-teal-500 flex-shrink-0 fill-current" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                      </svg>
+                      <a
+                        href={profile.linkedin_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-navy-800 hover:text-teal-600 transition-colors font-medium"
+                      >
+                        LinkedIn Profile ↗
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <dl className="mt-10 divide-y divide-white/[0.07] border-y border-white/[0.07] text-sm">
-                {profile?.location && (
-                  <div className="flex items-center justify-between gap-6 py-4">
-                    <dt className="label">Based in</dt>
-                    <dd className="text-right text-parchment-200">{profile.location}</dd>
-                  </div>
-                )}
-                {profile?.email && (
-                  <div className="flex items-center justify-between gap-6 py-4">
-                    <dt className="label">Email</dt>
-                    <dd className="min-w-0 truncate text-right">
-                      <a href={`mailto:${profile.email}`} className="link-lux">{profile.email}</a>
-                    </dd>
-                  </div>
-                )}
-                {profile?.linkedin_url && (
-                  <div className="flex items-center justify-between gap-6 py-4">
-                    <dt className="label">LinkedIn</dt>
-                    <dd className="text-right">
-                      <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="link-lux">
-                        View profile ↗
-                      </a>
-                    </dd>
-                  </div>
-                )}
-              </dl>
-
-              <div id="resume" className="mt-8 scroll-mt-32">
+              {/* Resume CTA */}
+              <div id="resume" className="scroll-mt-32">
                 {profile?.resume_url ? (
-                  <a href={profile.resume_url} target="_blank" rel="noopener noreferrer" className="btn-lux w-full">
-                    Download executive CV <span className="btn-arrow">↓</span>
+                  <a
+                    href={profile.resume_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-navy w-full text-center justify-center flex items-center gap-2"
+                  >
+                    <span>Download Executive CV</span>
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
                   </a>
                 ) : (
-                  <Link href="/contact" className="btn-lux-ghost w-full">
-                    Request full executive CV <span className="btn-arrow">→</span>
+                  <Link
+                    href="/contact"
+                    className="btn-navy w-full text-center justify-center flex items-center gap-2 text-xs"
+                  >
+                    <span>Request Full Executive CV</span>
+                    <span>→</span>
                   </Link>
                 )}
               </div>
             </div>
-          </Reveal>
 
-          {/* Bio */}
-          <div className="lg:col-span-7">
-            <Reveal>
-              <span className="eyebrow">Biography</span>
-              <h2 className="font-display mt-8 text-4xl sm:text-5xl font-light leading-[1.1] text-parchment-100">
-                {headline}
-              </h2>
-              <div className="mt-10 space-y-6 text-[1.05rem] leading-[1.85] font-light text-taupe-300">
-                {paragraphs.map((para, i) => (
-                  <p
-                    key={i}
-                    className={`whitespace-pre-line ${i === 0 ? 'first-letter:font-display first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-[4.2rem] first-letter:leading-[0.8] first-letter:text-champagne-300' : ''}`}
-                  >
-                    <FormattedText text={para} />
-                  </p>
-                ))}
-              </div>
-            </Reveal>
-
-            {profile?.keywords && profile.keywords.length > 0 && (
-              <Reveal className="mt-14 border-t border-white/[0.08] pt-10">
-                <h3 className="label">Core focus &amp; competencies</h3>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {profile.keywords.map((kw) => (
-                    <span key={kw} className="chip">{kw}</span>
+            {/* ── Right: Bio & Focus ── */}
+            <div className="space-y-10 lg:col-span-7">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight text-navy-900 mb-5">
+                  {headline}
+                </h2>
+                <div className="space-y-4 text-base leading-relaxed text-slate-600">
+                  {paragraphs.map((para, i) => (
+                    <p key={i} className="whitespace-pre-line">
+                      <FormattedText text={para} />
+                    </p>
                   ))}
                 </div>
-              </Reveal>
-            )}
+              </div>
 
-            <Reveal className="mt-14 flex flex-wrap gap-4 border-t border-white/[0.08] pt-10">
-              <Link href="/projects" className="btn-lux">
-                View case studies <span className="btn-arrow">→</span>
-              </Link>
-              <Link href="/experience" className="btn-lux-ghost">Career history</Link>
-              <Link href="/contact" className="btn-lux-ghost">Get in touch</Link>
-            </Reveal>
+              {/* Keywords */}
+              {profile?.keywords && profile.keywords.length > 0 && (
+                <div className="border-t border-navy-900/08 pt-8">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+                    Core Focus & Competencies
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {profile.keywords.map((kw) => (
+                      <span key={kw} className="badge-light">{kw}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* CTAs */}
+              <div className="border-t border-navy-900/08 pt-8 flex flex-wrap gap-3">
+                <Link href="/projects" className="btn-navy">
+                  View Case Studies →
+                </Link>
+                <Link href="/experience" className="btn-ghost-light">
+                  Career History
+                </Link>
+                <Link href="/contact" className="btn-ghost-light">
+                  Get In Touch
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* ═════════════ PHILOSOPHY ═════════════ */}
-      <section className="relative border-t border-white/[0.06] py-28 sm:py-36">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_0%_0%,rgba(201,169,110,0.07),transparent_70%)]" />
-        <div className="relative lux-container">
-          <Reveal>
-            <span className="eyebrow">PM philosophy</span>
-            <h2 className="font-display mt-8 text-5xl sm:text-6xl font-light leading-[1.02] text-parchment-100">
-              How I build <span className="italic text-champagne">products</span>
+      {/* ══════════════════════════════════════════════════
+          PM APPROACH — Dark Navy
+      ══════════════════════════════════════════════════ */}
+      <section className="section-dark py-20">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="mb-12">
+            <span className="section-label-dark mb-4 block w-fit">PM Philosophy</span>
+            <h2 className="text-3xl font-bold tracking-tight text-white">
+              How I Build Products
             </h2>
-          </Reveal>
-          <div className="mt-16 grid gap-px overflow-hidden rounded-lg border border-white/[0.07] bg-white/[0.07] md:grid-cols-3">
-            {pmApproach.map((item, i) => (
-              <Reveal key={item.title} delay={i * 120} className="group bg-ink-950 p-9 sm:p-10 transition-colors duration-700 hover:bg-ink-900">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-champagne-400/40 text-champagne-300 transition-colors duration-700 group-hover:border-champagne-300">
+          </div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {pmApproach.map((item) => (
+              <div key={item.title} className="card-dark p-6 space-y-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-teal-400/20 bg-teal-400/8 text-teal-400">
                   {item.icon}
                 </div>
-                <h3 className="font-display mt-10 text-[1.9rem] leading-tight font-normal text-parchment-100">{item.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed font-light text-taupe-300">{item.desc}</p>
-              </Reveal>
+                <div>
+                  <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm leading-relaxed text-zinc-400">{item.desc}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>

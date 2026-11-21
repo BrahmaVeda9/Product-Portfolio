@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate, absoluteUrl } from '@/lib/utils';
 import FormattedText from '@/components/FormattedText';
-import Reveal from '@/components/public/Reveal';
 import type { Metadata } from 'next';
 
 interface Props {
@@ -55,19 +54,19 @@ function Section({
 }) {
   if (!content || !content.trim()) return null;
   return (
-    <Reveal as="section" className="grid gap-6 border-t border-white/[0.08] py-14 lg:grid-cols-12 lg:gap-12">
-      <div className="lg:col-span-4">
-        <span className="font-display block text-5xl italic font-light text-champagne-400/80">{number}</span>
-        <h2 className="font-display mt-3 text-3xl font-light text-parchment-100">{title}</h2>
+    <div className="card-light p-7 sm:p-9 space-y-4 shadow-card">
+      <div className="flex items-center gap-3 border-b border-navy-900/07 pb-3 mb-2">
+        <span className="font-mono text-xs text-teal-500 font-bold">{number}</span>
+        <h2 className="text-lg font-bold tracking-tight text-navy-900">{title}</h2>
       </div>
-      <div className="prose-lux space-y-5 text-[1.05rem] leading-[1.85] font-light text-taupe-300 lg:col-span-8">
+      <div className="space-y-4 text-base leading-relaxed text-slate-600">
         {content.split('\n\n').map((para, i) => (
           <p key={i} className="whitespace-pre-line">
             <FormattedText text={para} />
           </p>
         ))}
       </div>
-    </Reveal>
+    </div>
   );
 }
 
@@ -79,64 +78,90 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <>
-      {/* ═════════════ HEADER ═════════════ */}
-      <section className="relative overflow-hidden pt-40 pb-16 sm:pt-48 sm:pb-20">
-        <div className="pointer-events-none absolute inset-0 page-glow" />
-        <div className="relative lux-container">
-          <nav aria-label="Breadcrumb" className="rise flex items-center gap-3 text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-taupe-400">
-            <Link href="/" className="transition-colors hover:text-parchment-100">Home</Link>
-            <span className="text-taupe-600">/</span>
-            <Link href="/projects" className="transition-colors hover:text-parchment-100">Projects</Link>
-            <span className="text-taupe-600">/</span>
-            <span className="max-w-[14rem] truncate text-champagne-300">{project.title}</span>
-          </nav>
-
-          <div className="rise rise-1 mt-12 flex flex-wrap items-center gap-3">
-            {project.category && <span className="chip chip-gold">{project.category}</span>}
-            {project.featured && <span className="chip">Featured case study</span>}
-            <span className="label ml-1">{formatDate(project.created_at, { year: 'numeric', month: 'long' })}</span>
+      {/* ══════════════════════════════════════════════════
+          HEADER — Dark Navy
+      ══════════════════════════════════════════════════ */}
+      <section className="section-dark relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-navy-800/40 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-4xl px-6">
+          {/* Breadcrumb */}
+          <div className="mb-8 flex items-center gap-2 text-xs font-mono text-zinc-500">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <Link href="/projects" className="hover:text-white transition-colors">Projects</Link>
+            <span>/</span>
+            <span className="text-zinc-300 truncate max-w-xs">{project.title}</span>
           </div>
 
-          <h1 className="rise rise-2 font-display mt-8 max-w-5xl text-[2.8rem] leading-[1.02] sm:text-7xl lg:text-[5.4rem] font-light text-parchment-100">
+          {/* Badges */}
+          <div className="flex flex-wrap items-center gap-2.5 mb-5">
+            {project.category && <span className="badge-teal">{project.category}</span>}
+            {project.featured && <span className="badge-gold">★ Featured Case Study</span>}
+            <span className="text-xs font-mono text-zinc-500">
+              {formatDate(project.created_at, { year: 'numeric', month: 'long' })}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-tight mb-4">
             {project.title}
           </h1>
 
           {project.short_desc && (
-            <p className="rise rise-3 mt-8 max-w-3xl text-lg sm:text-xl leading-relaxed font-light text-taupe-300">
+            <p className="text-lg sm:text-xl leading-relaxed text-zinc-300 font-normal max-w-2xl">
               {project.short_desc}
             </p>
           )}
 
-          <div className="rise rise-4 mt-14 flex flex-wrap items-end justify-between gap-8 border-t border-white/[0.08] pt-8">
-            <dl className="flex flex-wrap gap-x-14 gap-y-6">
+          {/* Metadata bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.07] mt-8 pt-6 text-xs">
+            <div className="flex items-center gap-8">
               {project.role && (
                 <div>
-                  <dt className="label">Role</dt>
-                  <dd className="mt-2 text-parchment-100">{project.role}</dd>
+                  <span className="text-zinc-500 uppercase tracking-wider block text-[10px] font-mono mb-0.5">Role</span>
+                  <span className="text-zinc-200 font-medium">{project.role}</span>
                 </div>
               )}
               {project.category && (
                 <div>
-                  <dt className="label">Domain</dt>
-                  <dd className="mt-2 text-parchment-100">{project.category}</dd>
+                  <span className="text-zinc-500 uppercase tracking-wider block text-[10px] font-mono mb-0.5">Domain</span>
+                  <span className="text-zinc-200 font-medium">{project.category}</span>
                 </div>
               )}
-            </dl>
+            </div>
 
-            <div className="flex flex-wrap gap-3">
+            {/* Action links */}
+            <div className="flex flex-wrap gap-2.5">
               {project.project_url && (
-                <a href={project.project_url} target="_blank" rel="noopener noreferrer" className="btn-lux-ghost !py-3">
-                  Live product ↗
+                <a
+                  href={project.project_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost-dark text-xs py-2 px-4"
+                >
+                  Live Product ↗
                 </a>
               )}
               {(project as any).prototype_url && (
-                <a href={(project as any).prototype_url} target="_blank" rel="noopener noreferrer" className="btn-lux-ghost !py-3">
-                  View prototype ↗
+                <a
+                  href={(project as any).prototype_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost-dark text-xs py-2 px-4"
+                >
+                  🧪 View Prototype ↗
                 </a>
               )}
               {(project as any).case_study_pdf_url && (
-                <a href={(project as any).case_study_pdf_url} target="_blank" rel="noopener noreferrer" className="btn-lux !py-3">
-                  Download PDF ↓
+                <a
+                  href={(project as any).case_study_pdf_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-gold text-xs py-2 px-4"
+                >
+                  📄 Download PDF ↓
                 </a>
               )}
             </div>
@@ -144,23 +169,26 @@ export default async function CaseStudyPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ═════════════ CONTENT ═════════════ */}
-      <section className="pb-28 sm:pb-36">
-        <div className="lux-container">
+      {/* ══════════════════════════════════════════════════
+          CONTENT — Light Ivory
+      ══════════════════════════════════════════════════ */}
+      <section className="section-light py-16">
+        <div className="mx-auto max-w-4xl px-6">
+          {/* Hero Thumbnail */}
           {project.thumbnail_url && (
-            <Reveal className="relative mb-16 aspect-[16/8] w-full overflow-hidden rounded-lg border border-white/[0.07] bg-ink-900">
+            <div className="relative mb-12 h-80 sm:h-96 w-full overflow-hidden rounded-2xl border border-navy-900/08 bg-ivory-200 shadow-card">
               <Image
                 src={project.thumbnail_url}
                 alt={project.title}
                 fill
-                sizes="(min-width: 1312px) 1216px, 100vw"
                 className="object-cover"
                 priority
               />
-            </Reveal>
+            </div>
           )}
 
-          <div className="border-b border-white/[0.08]">
+          {/* Case Study Sections */}
+          <div className="space-y-5">
             <Section number="01" title="The Problem" content={project.problem} />
             <Section number="02" title="Approach & Strategy" content={project.approach} />
             <Section number="03" title="Decisions & Trade-offs" content={project.decisions} />
@@ -177,42 +205,48 @@ export default async function CaseStudyPage({ params }: Props) {
             />
           </div>
 
+          {/* Skills */}
           {project.skills.length > 0 && (
-            <Reveal className="grid gap-6 border-b border-white/[0.08] py-14 lg:grid-cols-12 lg:gap-12">
-              <h3 className="label lg:col-span-4">Technologies &amp; methodologies</h3>
-              <div className="flex flex-wrap gap-2 lg:col-span-8">
+            <div className="mt-12 border-t border-navy-900/07 pt-8">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+                Technologies & Methodologies
+              </h3>
+              <div className="flex flex-wrap gap-2">
                 {project.skills.map((skill) => (
-                  <span key={skill} className="chip">{skill}</span>
-                ))}
-              </div>
-            </Reveal>
-          )}
-
-          {project.gallery_urls && project.gallery_urls.length > 0 && (
-            <div className="py-14">
-              <h3 className="label mb-8">Product artifacts &amp; interface gallery</h3>
-              <div className="grid gap-6 sm:grid-cols-2">
-                {project.gallery_urls.map((url, i) => (
-                  <Reveal key={i} delay={(i % 2) * 120} className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/[0.07] bg-ink-900">
-                    <Image
-                      src={url}
-                      alt={`${project.title} artifact ${i + 1}`}
-                      fill
-                      sizes="(min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-[1400ms] hover:scale-[1.04]"
-                    />
-                  </Reveal>
+                  <span key={skill} className="badge-light">{skill}</span>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="mt-16 flex flex-wrap items-center justify-between gap-4">
-            <Link href="/projects" className="btn-lux-ghost">
-              ← All case studies
+          {/* Gallery */}
+          {project.gallery_urls && project.gallery_urls.length > 0 && (
+            <div className="mt-12 border-t border-navy-900/07 pt-8">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-6">
+                Product Artifacts & Interface Gallery
+              </h3>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {project.gallery_urls.map((url, i) => (
+                  <div key={i} className="relative h-56 overflow-hidden rounded-xl border border-navy-900/08 bg-ivory-200 shadow-card">
+                    <Image
+                      src={url}
+                      alt={`${project.title} artifact ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Back navigation */}
+          <div className="mt-14 border-t border-navy-900/07 pt-8 flex items-center justify-between">
+            <Link href="/projects" className="btn-ghost-light">
+              ← All Case Studies
             </Link>
-            <Link href="/contact" className="btn-lux">
-              Discuss this work <span className="btn-arrow">→</span>
+            <Link href="/contact" className="btn-navy">
+              Discuss This Work →
             </Link>
           </div>
         </div>

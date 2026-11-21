@@ -7,80 +7,86 @@ interface ProjectCardProps {
   project: Project;
 }
 
-function initials(title: string) {
-  return title
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase())
-    .join('');
-}
-
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="panel panel-hover group flex h-full flex-col overflow-hidden"
+      className="card-light card-light-interactive group flex h-full flex-col overflow-hidden shadow-card"
     >
-      {/* Visual */}
-      <div className="relative aspect-[16/11] w-full overflow-hidden bg-ink-900">
+      {/* Thumbnail */}
+      <div className="relative h-48 w-full overflow-hidden bg-ivory-200">
         {project.thumbnail_url ? (
-          <>
-            <Image
-              src={project.thumbnail_url}
-              alt={project.title}
-              fill
-              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-              className="object-cover opacity-90 transition-all duration-[1400ms] ease-out group-hover:scale-[1.06] group-hover:opacity-100"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
-          </>
+          <Image
+            src={project.thumbnail_url}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(70%_70%_at_50%_40%,rgba(201,169,110,0.14),transparent_70%)]">
-            <div
-              className="absolute inset-0 opacity-[0.07]"
-              style={{ backgroundImage: 'repeating-linear-gradient(135deg, #C9A96E 0 1px, transparent 1px 14px)' }}
-            />
-            <span className="relative font-display text-7xl font-light italic text-champagne-300/90 transition-transform duration-[1400ms] ease-out group-hover:scale-110">
-              {initials(project.title)}
-            </span>
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-ivory-200 to-ivory-300">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-navy-900/10 bg-white shadow-card">
+                <svg className="h-7 w-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                </svg>
+              </div>
+              <span className="text-[11px] font-medium tracking-wider text-slate-400 uppercase">Case Study</span>
+            </div>
           </div>
         )}
 
+        {/* Featured badge */}
         {project.featured && (
-          <span className="absolute left-5 top-5 chip chip-gold backdrop-blur-md">Featured</span>
+          <div className="absolute right-3 top-3">
+            <span className="badge-gold text-[11px]">
+              ★ Featured
+            </span>
+          </div>
         )}
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-7">
-        <div className="flex items-center justify-between gap-3 label">
-          <span className="text-champagne-400">{project.category ?? 'Case study'}</span>
-          <span>{formatDate(project.created_at, { year: 'numeric', month: 'short' })}</span>
+      <div className="flex flex-col flex-1 p-6">
+        {/* Category + Date */}
+        <div className="mb-3 flex items-center justify-between text-xs">
+          {project.category ? (
+            <span className="badge-teal">{project.category}</span>
+          ) : <div />}
+          <span className="text-slate-400 font-mono text-[11px]">
+            {formatDate(project.created_at, { year: 'numeric', month: 'short' })}
+          </span>
         </div>
 
-        <h3 className="font-display mt-5 text-[1.85rem] leading-[1.1] font-normal text-parchment-100 transition-colors duration-500 group-hover:text-champagne-200">
+        {/* Title */}
+        <h3 className="mb-2 text-lg font-bold tracking-tight text-navy-900 transition-colors group-hover:text-teal-600">
           {project.title}
         </h3>
 
-        <p className="mt-4 flex-1 text-sm leading-relaxed text-taupe-300 line-clamp-3">
-          {truncate(project.short_desc, 150)}
+        {/* Description */}
+        <p className="mb-4 text-sm leading-relaxed text-slate-500 line-clamp-2 flex-1">
+          {truncate(project.short_desc, 130)}
         </p>
 
+        {/* Skills */}
         {project.skills.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-1.5">
+          <div className="mb-4 flex flex-wrap gap-1.5">
             {project.skills.slice(0, 3).map((skill) => (
-              <span key={skill} className="chip !py-1 !text-[0.66rem]">{skill}</span>
+              <span key={skill} className="rounded-md border border-navy-900/08 bg-ivory-100 px-2 py-0.5 text-[11px] text-slate-500">
+                {skill}
+              </span>
             ))}
             {project.skills.length > 3 && (
-              <span className="chip !py-1 !text-[0.66rem] !text-taupe-500">+{project.skills.length - 3}</span>
+              <span className="rounded-md border border-navy-900/06 bg-ivory-100 px-2 py-0.5 text-[11px] text-slate-400">
+                +{project.skills.length - 3} more
+              </span>
             )}
           </div>
         )}
 
-        <div className="mt-7 flex items-center justify-between border-t border-white/[0.07] pt-5 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-taupe-300 transition-colors duration-500 group-hover:text-champagne-300">
-          <span>Read the case study</span>
-          <span className="btn-arrow">→</span>
+        {/* Read more */}
+        <div className="pt-4 border-t border-navy-900/06 flex items-center justify-between text-xs font-semibold text-slate-400 group-hover:text-teal-600 transition-colors">
+          <span>Read Case Study</span>
+          <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
         </div>
       </div>
     </Link>

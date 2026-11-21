@@ -29,25 +29,25 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="panel p-8 sm:p-12 space-y-9">
+    <form onSubmit={handleSubmit} className="card-dark p-8 sm:p-10 space-y-6">
       {/* Header */}
       <div>
-        <h2 className="font-display text-4xl font-light text-parchment-100">Send a direct message</h2>
-        <p className="mt-3 text-sm leading-relaxed text-taupe-300">
+        <h2 className="text-xl font-bold tracking-tight text-white">Send a Direct Message</h2>
+        <p className="mt-1 text-sm text-zinc-400">
           For leadership roles, advisory, or enterprise initiatives — I respond within 24–48 hours.
         </p>
       </div>
 
       {/* Name & Email */}
-      <div className="grid gap-9 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="contact-name" className="label block">
-            Full Name <span className="text-champagne-400">*</span>
+          <label htmlFor="contact-name" className="mb-2 block text-xs font-semibold tracking-wider uppercase text-zinc-400">
+            Full Name <span className="text-zinc-600">*</span>
           </label>
           <input
             id="contact-name"
             type="text"
-            className="input-lux"
+            className="contact-input"
             placeholder="e.g. Sarah Jenkins"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -55,13 +55,13 @@ export default function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="contact-email" className="label block">
-            Professional Email <span className="text-champagne-400">*</span>
+          <label htmlFor="contact-email" className="mb-2 block text-xs font-semibold tracking-wider uppercase text-zinc-400">
+            Professional Email <span className="text-zinc-600">*</span>
           </label>
           <input
             id="contact-email"
             type="email"
-            className="input-lux"
+            className="contact-input"
             placeholder="name@company.com"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -72,13 +72,13 @@ export default function ContactForm() {
 
       {/* Subject */}
       <div>
-        <label htmlFor="contact-subject" className="label block">
+        <label htmlFor="contact-subject" className="mb-2 block text-xs font-semibold tracking-wider uppercase text-zinc-400">
           Subject / Opportunity Type
         </label>
         <input
           id="contact-subject"
           type="text"
-          className="input-lux"
+          className="contact-input"
           placeholder="e.g. VP of Product Role at Acme Corp"
           value={form.subject}
           onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -87,13 +87,13 @@ export default function ContactForm() {
 
       {/* Message */}
       <div>
-        <label htmlFor="contact-message" className="label block">
-          Message <span className="text-champagne-400">*</span>
+        <label htmlFor="contact-message" className="mb-2 block text-xs font-semibold tracking-wider uppercase text-zinc-400">
+          Message <span className="text-zinc-600">*</span>
         </label>
         <textarea
           id="contact-message"
           rows={5}
-          className="input-lux resize-y min-h-[120px]"
+          className="contact-input resize-y min-h-[120px]"
           placeholder="Briefly describe your company, the scope of the opportunity, or strategic challenge you'd like to explore..."
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -106,21 +106,21 @@ export default function ContactForm() {
         id="contact-submit"
         type="submit"
         disabled={loading}
-        className="btn-lux w-full"
+        className="btn-gold w-full py-3.5 text-sm font-semibold tracking-wide"
       >
         {loading ? (
           <>
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-ink-950/30 border-t-ink-950" />
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-navy-950/30 border-t-navy-950" />
             Sending…
           </>
         ) : (
-          <>Send message <span className="btn-arrow">→</span></>
+          'Send Message →'
         )}
       </button>
 
       {/* Trust note */}
-      <div className="flex items-center justify-center gap-2 text-center text-xs text-taupe-400">
-        <svg className="h-3.5 w-3.5 text-champagne-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="flex items-center justify-center gap-2 text-center text-xs text-zinc-500">
+        <svg className="h-3.5 w-3.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
         <span>Confidential & direct communication</span>

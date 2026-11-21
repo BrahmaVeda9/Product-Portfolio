@@ -19,141 +19,160 @@ interface NavbarProps {
 }
 
 export default function Navbar({ resumeUrl }: NavbarProps) {
-  const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname  = usePathname();
+  const [scrolled,    setScrolled]    = useState(false);
+  const [mobileOpen,  setMobileOpen]  = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileOpen]);
-
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname?.startsWith(href));
-
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-all duration-700',
-        scrolled || mobileOpen
-          ? 'border-b border-white/[0.06] bg-ink-950/75 backdrop-blur-2xl'
-          : 'border-b border-transparent bg-transparent'
+        'fixed inset-x-0 top-0 z-50 transition-all duration-300',
+        scrolled
+          ? 'border-b border-white/[0.06] bg-[#090e1c]/90 backdrop-blur-2xl shadow-lg shadow-black/20'
+          : 'bg-transparent'
       )}
     >
-      <div className={cn('lux-container flex items-center justify-between transition-all duration-700', scrolled ? 'py-4' : 'py-6 sm:py-7')}>
-        {/* ── Monogram ── */}
-        <Link href="/" className="group flex items-center gap-3.5" onClick={() => setMobileOpen(false)}>
-          <span className="relative flex h-10 w-10 items-center justify-center rounded-full border border-champagne-400/50 transition-colors duration-500 group-hover:border-champagne-300">
-            <span className="font-display text-[1.05rem] italic text-champagne-300 leading-none tracking-tight">PM</span>
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+
+        {/* ── Logo ── */}
+        <Link
+          href="/"
+          className="group flex items-center gap-3"
+        >
+          {/* Monogram */}
+          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl overflow-hidden">
+            <span className="absolute inset-0 bg-gradient-to-br from-gold-300 to-gold-500 opacity-90" />
+            <span className="relative text-sm font-black text-navy-950 leading-none">PM</span>
           </span>
-          <span className="hidden sm:flex flex-col leading-tight">
-            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-parchment-100">Product Portfolio</span>
-            <span className="mt-1 text-[0.62rem] uppercase tracking-[0.22em] text-taupe-400">AI · GenAI · Enterprise SaaS</span>
-          </span>
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-semibold text-white tracking-tight">Product Portfolio</span>
+            <span className="text-[10px] font-medium text-zinc-400 tracking-wide">AI · GenAI · Enterprise SaaS</span>
+          </div>
         </Link>
 
-        {/* ── Desktop nav ── */}
-        <nav className="hidden items-center gap-9 lg:flex" aria-label="Primary">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                'relative py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition-colors duration-500',
-                isActive(link.href) ? 'text-champagne-300' : 'text-taupe-300 hover:text-parchment-100'
-              )}
-            >
-              {link.label}
-              <span
+        {/* ── Desktop Nav ── */}
+        <nav className="hidden items-center gap-0.5 rounded-full border border-white/[0.07] bg-white/[0.03] p-1.5 backdrop-blur-md md:flex">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
                 className={cn(
-                  'absolute -bottom-1 left-0 h-px w-full origin-left bg-champagne-400 transition-transform duration-700',
-                  isActive(link.href) ? 'scale-x-100' : 'scale-x-0'
+                  'relative rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all duration-200',
+                  isActive
+                    ? 'bg-white/[0.12] text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
                 )}
-              />
-            </Link>
-          ))}
+              >
+                {link.label}
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* ── Desktop CTA ── */}
-        <div className="hidden items-center gap-7 lg:flex">
+        {/* ── CTA ── */}
+        <div className="hidden items-center gap-3 md:flex">
           {resumeUrl ? (
-            <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="link-lux text-[0.68rem] font-semibold uppercase tracking-[0.24em]">
-              Résumé ↗
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-all flex items-center gap-1.5"
+            >
+              <span>Resume / CV</span>
+              <span className="text-[10px] text-gold-400">↗</span>
             </a>
           ) : (
-            <Link href="/about#resume" className="link-lux text-[0.68rem] font-semibold uppercase tracking-[0.24em]">
-              Résumé
+            <Link
+              href="/about#resume"
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.08] transition-all"
+            >
+              Resume / CV
             </Link>
           )}
-          <Link href="/contact" className="btn-lux-ghost !px-5 !py-2.5">
-            Get in touch
+          <Link
+            href="/contact"
+            className="btn-gold text-xs px-5 py-2"
+          >
+            Get In Touch →
           </Link>
         </div>
 
-        {/* ── Mobile toggle ── */}
+        {/* ── Mobile hamburger ── */}
         <button
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-parchment-100 lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-300 transition-colors hover:text-white md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileOpen}
+          aria-label="Toggle menu"
         >
-          <span className="relative block h-3 w-5">
-            <span className={cn('absolute left-0 top-0 h-px w-5 bg-current transition-all duration-500', mobileOpen && 'top-1.5 rotate-45')} />
-            <span className={cn('absolute left-0 bottom-0 h-px w-5 bg-current transition-all duration-500', mobileOpen && 'bottom-1.5 -rotate-45')} />
-          </span>
+          <div className="flex flex-col gap-1.5">
+            <span className={cn('h-0.5 w-4 bg-current transition-all duration-300', mobileOpen && 'translate-y-2 rotate-45')} />
+            <span className={cn('h-0.5 w-4 bg-current transition-all duration-300', mobileOpen && 'opacity-0')} />
+            <span className={cn('h-0.5 w-4 bg-current transition-all duration-300', mobileOpen && '-translate-y-2 -rotate-45')} />
+          </div>
         </button>
       </div>
 
-      {/* ── Mobile overlay ── */}
-      <div
-        className={cn(
-          'absolute inset-x-0 top-full h-[100dvh] bg-ink-950 transition-all duration-700 lg:hidden',
-          mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-        )}
-      >
-        <nav className="lux-container flex h-full flex-col pt-10 pb-28" aria-label="Mobile">
-          <div className="flex flex-col">
-            {navLinks.map((link, i) => (
+      {/* ── Mobile dropdown ── */}
+      {mobileOpen && (
+        <div className="border-b border-white/[0.07] bg-[#0e1628]/97 px-6 py-5 backdrop-blur-2xl md:hidden">
+          <nav className="flex flex-col gap-1">
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'flex items-baseline justify-between border-b border-white/[0.06] py-4 font-display text-4xl font-light transition-all duration-700',
-                  isActive(link.href) ? 'text-champagne-300' : 'text-parchment-100',
-                  mobileOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                  'rounded-xl px-4 py-2.5 text-sm font-medium transition-all',
+                  pathname === link.href
+                    ? 'bg-white/[0.08] text-white'
+                    : 'text-zinc-400 hover:bg-white/[0.04] hover:text-white'
                 )}
-                style={{ transitionDelay: mobileOpen ? `${80 + i * 50}ms` : '0ms' }}
               >
                 {link.label}
-                <span className="text-sm text-taupe-500">→</span>
               </Link>
             ))}
-          </div>
-          <div className="mt-10 flex flex-col gap-3">
-            {resumeUrl ? (
-              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} className="btn-lux-ghost">
-                Download résumé ↗
-              </a>
-            ) : (
-              <Link href="/about#resume" onClick={() => setMobileOpen(false)} className="btn-lux-ghost">
-                Résumé
+            <div className="mt-3 pt-3 border-t border-white/[0.08] flex flex-col gap-2">
+              {resumeUrl ? (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-center text-sm font-medium text-zinc-300 hover:text-white flex items-center justify-center gap-1.5"
+                >
+                  <span>Download Resume / CV</span>
+                  <span className="text-xs text-gold-400">↗</span>
+                </a>
+              ) : (
+                <Link
+                  href="/about#resume"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-center text-sm font-medium text-zinc-300 hover:text-white"
+                >
+                  Resume / CV
+                </Link>
+              )}
+              <Link
+                href="/contact"
+                onClick={() => setMobileOpen(false)}
+                className="btn-gold justify-center text-xs py-2.5"
+              >
+                Get In Touch →
               </Link>
-            )}
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="btn-lux">
-              Get in touch <span className="btn-arrow">→</span>
-            </Link>
-          </div>
-        </nav>
-      </div>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

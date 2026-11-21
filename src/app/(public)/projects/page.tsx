@@ -3,9 +3,6 @@ import type { Project } from '@/types/database.types';
 import ProjectCard from '@/components/public/ProjectCard';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import PageHeader from '@/components/public/PageHeader';
-import Reveal from '@/components/public/Reveal';
-import Tilt from '@/components/public/Tilt';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -27,10 +24,10 @@ async function getProjects(): Promise<Project[]> {
 export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: { category?: string };
 }) {
-  const [projects, { category }] = await Promise.all([getProjects(), searchParams]);
-  const activeCategory = category ?? 'All';
+  const projects = await getProjects();
+  const activeCategory = searchParams.category ?? 'All';
 
   const filtered =
     activeCategory === 'All'
@@ -39,68 +36,78 @@ export default async function ProjectsPage({
 
   return (
     <>
-      <PageHeader
-        eyebrow="Portfolio & retrospectives"
-        title={
-          <>
-            Product <span className="italic text-champagne">case studies</span>
-          </>
-        }
-        intro="In-depth strategic analyses covering problem framing, stakeholder alignment, architectural trade-offs, and shipped metrics."
-      />
+      {/* ══════════════════════════════════════════════════
+          HEADER — Dark Navy
+      ══════════════════════════════════════════════════ */}
+      <section className="section-dark relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-navy-800/40 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-teal-900/15 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-6xl px-6">
+          <span className="section-label-dark mb-4 block w-fit">Portfolio & Retrospectives</span>
+          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight">
+            Product Case Studies
+          </h1>
+          <p className="mt-5 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
+            In-depth strategic analyses covering problem framing, stakeholder alignment, architectural trade-offs, and shipped metrics.
+          </p>
+        </div>
+      </section>
 
-      <section className="pb-28 sm:pb-36">
-        <div className="lux-container">
-          {/* Category filter */}
-          <nav aria-label="Filter by category" className="mb-14 flex flex-wrap gap-x-8 gap-y-4">
+      {/* ══════════════════════════════════════════════════
+          PROJECTS GRID — Light Ivory
+      ══════════════════════════════════════════════════ */}
+      <section className="section-light py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          {/* Category filter pills */}
+          <div className="mb-10 flex flex-wrap gap-2 pb-8 border-b border-navy-900/07">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
               return (
                 <a
                   key={cat}
                   href={cat === 'All' ? '/projects' : `/projects?category=${cat}`}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`relative pb-2 text-[0.7rem] font-semibold uppercase tracking-[0.24em] transition-colors duration-500 ${
-                    isActive ? 'text-champagne-300' : 'text-taupe-400 hover:text-parchment-100'
-                  }`}
+                  className={`filter-pill ${isActive ? 'active' : ''}`}
                 >
                   {cat}
-                  <span className={`absolute bottom-0 left-0 h-px w-full origin-left bg-champagne-400 transition-transform duration-700 ${isActive ? 'scale-x-100' : 'scale-x-0'}`} />
                 </a>
               );
             })}
-          </nav>
+          </div>
 
+          {/* Grid */}
           {filtered.length === 0 ? (
-            <div className="panel mx-auto max-w-xl p-14 text-center">
-              <span className="font-display text-5xl italic text-champagne-300">—</span>
-              <h3 className="font-display mt-6 text-3xl font-light text-parchment-100">No published studies</h3>
-              <p className="mt-3 text-sm text-taupe-300">
+            <div className="card-light p-16 text-center max-w-lg mx-auto shadow-card">
+              <div className="h-14 w-14 rounded-2xl border border-navy-900/08 bg-ivory-200 flex items-center justify-center mx-auto mb-5">
+                <svg className="h-7 w-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+              </div>
+              <h3 className="text-base font-semibold text-navy-900 mb-2">No Published Studies</h3>
+              <p className="text-sm text-slate-500">
                 {activeCategory !== 'All'
                   ? `No published ${activeCategory} case studies found.`
                   : 'Case studies will appear here once published from the admin panel.'}
               </p>
             </div>
           ) : (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((project, i) => (
-                <Reveal key={project.id} delay={(i % 3) * 120} className="h-full">
-                  <Tilt className="h-full" max={4}>
-                    <ProjectCard project={project} />
-                  </Tilt>
-                </Reveal>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((project) => (
+                <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           )}
 
+          {/* Count row */}
           {filtered.length > 0 && (
-            <div className="mt-16 flex items-center justify-between border-t border-white/[0.08] pt-8 text-xs text-taupe-400">
-              <span className="label">
+            <div className="mt-12 border-t border-navy-900/07 pt-6 flex justify-between items-center text-xs text-slate-400 font-mono">
+              <span>
                 {filtered.length} {filtered.length === 1 ? 'case study' : 'case studies'}
                 {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
               </span>
-              <Link href="/" className="link-lux text-[0.7rem] uppercase tracking-[0.22em]">
-                ← Back to overview
+              <Link href="/" className="hover:text-navy-800 transition-colors">
+                ← Back to Overview
               </Link>
             </div>
           )}

@@ -26,7 +26,7 @@ export default function FormattedText({ text, className }: FormattedTextProps) {
             .replace(/^(\*\*|__|<b>|<strong>)/i, '')
             .replace(/(\*\*|__|<\/b>|<\/strong>)$/i, '');
           return (
-            <strong key={index} className="font-semibold text-parchment-100">
+            <strong key={index} className="font-bold text-navy-900">
               {content}
             </strong>
           );
@@ -43,7 +43,7 @@ export default function FormattedText({ text, className }: FormattedTextProps) {
                     .replace(/^(\*|_|<i>|<em>)/i, '')
                     .replace(/(\*|_|<\/i>|<\/em>)$/i, '');
                   return (
-                    <em key={sIdx} className="italic text-champagne-200">
+                    <em key={sIdx} className="italic text-navy-800">
                       {content}
                     </em>
                   );
