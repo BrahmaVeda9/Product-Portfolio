@@ -11,10 +11,11 @@ export default async function PublicLayout({ children }: { children: React.React
     .maybeSingle();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="lux min-h-screen flex flex-col">
       <Navbar resumeUrl={profile?.resume_url} />
       <main className="flex-grow">{children}</main>
       <Footer />
+      <div className="grain" aria-hidden="true" />
     </div>
   );
 }

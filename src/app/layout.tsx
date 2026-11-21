@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono, Cormorant_Garamond } from 'next/font/google';
+import { Inter, JetBrains_Mono, Cormorant_Garamond, Manrope } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -11,8 +11,15 @@ const inter = Inter({
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['500', '600', '700'],
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
   variable: '--font-display',
+  display: 'swap',
+});
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-body',
   display: 'swap',
 });
 
@@ -48,21 +55,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${cormorant.variable} dark`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${cormorant.variable} ${manrope.variable} dark`}>
       <body className="font-sans antialiased">
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
             style: {
-              background: '#16203d',
-              color: '#e8eaf0',
-              border: '1px solid rgba(244,169,10,0.2)',
-              borderRadius: '12px',
+              background: '#15130F',
+              color: '#F2EDE4',
+              border: '1px solid rgba(201,169,110,0.25)',
+              borderRadius: '6px',
               fontSize: '14px',
             },
             success: {
-              iconTheme: { primary: '#f4a90a', secondary: '#090e1c' },
+              iconTheme: { primary: '#C9A96E', secondary: '#0B0A09' },
             },
             error: {
               iconTheme: { primary: '#dc2626', secondary: '#fff' },

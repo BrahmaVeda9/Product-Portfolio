@@ -11,9 +11,40 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Cormorant Garamond', 'Georgia', 'serif'],
+        body: ['var(--font-body)', 'Manrope', 'system-ui', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'monospace'],
       },
       colors: {
+        // ── Obsidian & Champagne (public site) ──
+        ink: {
+          950: '#0B0A09',
+          900: '#100E0C',
+          850: '#15130F',
+          800: '#1B1814',
+          700: '#26221C',
+          600: '#35302A',
+        },
+        champagne: {
+          100: '#F7F0E2',
+          200: '#EBDDBF',
+          300: '#DCC596',
+          400: '#C9A96E',
+          500: '#B08F55',
+          600: '#8E7240',
+        },
+        parchment: {
+          50:  '#FAF7F1',
+          100: '#F2EDE4',
+          200: '#E3DCCF',
+          300: '#C9C1B3',
+        },
+        taupe: {
+          300: '#B5AEA2',
+          400: '#8C857A',
+          500: '#6E685F',
+          600: '#4F4A43',
+        },
         navy: {
           50:  '#f0f3ff',
           100: '#e0e7ff',

@@ -3,6 +3,8 @@ import type { Experience, Profile } from '@/types/database.types';
 import { formatDate } from '@/lib/utils';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import PageHeader from '@/components/public/PageHeader';
+import Reveal from '@/components/public/Reveal';
 
 export const metadata: Metadata = {
   title: 'Experience',
@@ -25,9 +27,8 @@ function DateRange({ start, end }: { start: string; end: string | null }) {
   const startStr = formatDate(start, { year: 'numeric', month: 'short' });
   const endStr   = end ? formatDate(end, { year: 'numeric', month: 'short' }) : 'Present';
   return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-xs tracking-wide text-teal-600 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
-      <span className="h-1.5 w-1.5 rounded-full bg-teal-400 flex-shrink-0" />
-      {startStr} — {endStr}
+    <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-champagne-300">
+      {startStr} <span className="text-taupe-500">—</span> {endStr}
     </span>
   );
 }
@@ -37,105 +38,84 @@ export default async function ExperiencePage() {
 
   return (
     <>
-      {/* ══════════════════════════════════════════════════
-          HEADER — Dark Navy
-      ══════════════════════════════════════════════════ */}
-      <section className="section-dark relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-navy-800/50 blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-teal-900/15 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-4xl px-6">
-          <span className="section-label-dark mb-4 block w-fit">Track Record & Leadership</span>
-          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight">
-            Leadership Experience<br />
-            <span className="text-gold-gradient">& Proven Impact</span>
-          </h1>
-          <p className="mt-5 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
-            {profile?.headline ?? 'Proven leadership delivering high-impact products across AI, SaaS platforms, and enterprise systems.'}
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Track record & leadership"
+        title={
+          <>
+            Leadership experience{' '}
+            <span className="italic text-champagne">&amp; proven impact</span>
+          </>
+        }
+        intro={profile?.headline ?? 'Proven leadership delivering high-impact products across AI, SaaS platforms, and enterprise systems.'}
+      />
 
-      {/* ══════════════════════════════════════════════════
-          TIMELINE — Light Ivory
-      ══════════════════════════════════════════════════ */}
-      <section id="experience" className="section-light py-20 scroll-mt-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <div className="mb-12">
-            <span className="section-label-light mb-3 block w-fit">Career History</span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-navy-900">
-              Professional Experience & Shipped Outcomes
-            </h2>
-            <p className="mt-2 text-sm text-slate-500">
-              Chronological leadership record driving product discovery, cross-functional delivery, and commercial growth.
+      <section id="experience" className="scroll-mt-24 pb-28 sm:pb-36">
+        <div className="lux-container">
+          <Reveal className="mb-16 grid gap-6 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <span className="eyebrow">Career history</span>
+            </div>
+            <p className="font-display text-3xl sm:text-4xl font-light leading-[1.2] text-parchment-100 lg:col-span-7">
+              Professional experience &amp; shipped outcomes —{' '}
+              <span className="italic text-taupe-300">driving discovery, cross-functional delivery and commercial growth.</span>
             </p>
-          </div>
+          </Reveal>
 
           {experience.length === 0 ? (
-            <div className="card-light p-14 text-center max-w-lg mx-auto shadow-card">
-              <div className="h-14 w-14 rounded-2xl border border-navy-900/08 bg-ivory-200 flex items-center justify-center mx-auto mb-5">
-                <svg className="h-7 w-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
-              </div>
-              <h3 className="text-base font-semibold text-navy-900 mb-2">Career History In Preparation</h3>
-              <p className="text-sm text-slate-500">Professional history can be managed via the admin dashboard.</p>
+            <div className="panel mx-auto max-w-xl p-14 text-center">
+              <span className="font-display text-5xl italic text-champagne-300">—</span>
+              <h3 className="font-display mt-6 text-3xl font-light text-parchment-100">Career history in preparation</h3>
+              <p className="mt-3 text-sm text-taupe-300">Professional history can be managed via the admin dashboard.</p>
             </div>
           ) : (
-            <div className="relative border-l-2 border-navy-900/10 ml-4 sm:ml-6 pl-8 sm:pl-10 space-y-10">
-              {experience.map((exp) => (
-                <div key={exp.id} className="relative group">
-                  {/* Timeline dot */}
-                  <div className="absolute -left-[41px] sm:-left-[49px] top-5">
-                    <div className="timeline-dot" />
-                  </div>
-
-                  {/* Card */}
-                  <div className="card-light p-7 sm:p-8 shadow-card hover:shadow-ivory-lg transition-all duration-300">
-                    {/* Header row */}
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 pb-5 border-b border-navy-900/07 mb-5">
-                      <div>
-                        <h3 className="text-xl font-bold tracking-tight text-navy-900">{exp.role}</h3>
-                        <p className="text-sm font-semibold text-teal-600 mt-1">{exp.company}</p>
-                      </div>
+            <ol className="border-t border-white/[0.08]">
+              {experience.map((exp, i) => (
+                <Reveal as="li" key={exp.id} delay={i * 60} className="row-lux border-b border-white/[0.08]">
+                  <div className="grid gap-8 py-12 sm:py-14 lg:grid-cols-12 lg:gap-12 lg:px-4">
+                    {/* Meta column */}
+                    <div className="lg:col-span-4">
                       <DateRange start={exp.start_date} end={exp.end_date} />
+                      <p className="font-display mt-4 text-2xl italic font-light text-champagne-200">{exp.company}</p>
                     </div>
 
-                    {exp.description && (
-                      <p className="text-sm leading-relaxed text-slate-600 mb-5">
-                        {exp.description}
-                      </p>
-                    )}
+                    {/* Body */}
+                    <div className="lg:col-span-8">
+                      <h3 className="font-display text-3xl sm:text-[2.6rem] leading-[1.1] font-light text-parchment-100">
+                        {exp.role}
+                      </h3>
 
-                    {exp.achievements && exp.achievements.length > 0 && (
-                      <div>
-                        <span className="text-[10px] uppercase font-semibold tracking-widest text-slate-400 block mb-3">
-                          Strategic Outcomes & Delivered Impact
-                        </span>
-                        <ul className="space-y-2.5">
-                          {exp.achievements.map((ach, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
-                              <span className="h-1.5 w-1.5 rounded-full bg-gold-400 mt-2 flex-shrink-0" />
-                              <span>{ach}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                      {exp.description && (
+                        <p className="mt-5 max-w-2xl text-[0.98rem] leading-relaxed font-light text-taupe-300">
+                          {exp.description}
+                        </p>
+                      )}
+
+                      {exp.achievements && exp.achievements.length > 0 && (
+                        <div className="mt-8">
+                          <span className="label">Strategic outcomes &amp; delivered impact</span>
+                          <ul className="mt-5 space-y-3.5">
+                            {exp.achievements.map((ach, j) => (
+                              <li key={j} className="flex items-start gap-4 text-[0.95rem] leading-relaxed font-light text-parchment-200">
+                                <span className="mt-[0.6rem] h-[5px] w-[5px] flex-shrink-0 rotate-45 bg-champagne-400" />
+                                <span>{ach}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </Reveal>
               ))}
-            </div>
+            </ol>
           )}
 
-          {/* Bottom navigation CTA */}
-          <div className="mt-16 pt-8 border-t border-navy-900/08 flex flex-wrap items-center justify-between gap-4">
-            <Link href="/projects" className="btn-navy text-xs">
-              Explore Shipped Case Studies →
+          <div className="mt-20 flex flex-wrap items-center justify-between gap-4">
+            <Link href="/projects" className="btn-lux">
+              Explore shipped case studies <span className="btn-arrow">→</span>
             </Link>
-            <Link href="/contact" className="btn-ghost-light text-xs">
-              Inquire About Experience
+            <Link href="/contact" className="btn-lux-ghost">
+              Inquire about experience
             </Link>
           </div>
         </div>
