@@ -46,7 +46,7 @@ export default async function ProjectsPage({
         </div>
         <div className="relative mx-auto max-w-6xl px-6">
           <span className="section-label-dark mb-4 block w-fit">Portfolio & Retrospectives</span>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight">
             Product Case Studies
           </h1>
           <p className="mt-5 text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">

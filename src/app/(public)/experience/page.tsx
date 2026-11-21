@@ -47,7 +47,7 @@ export default async function ExperiencePage() {
         </div>
         <div className="relative mx-auto max-w-4xl px-6">
           <span className="section-label-dark mb-4 block w-fit">Track Record & Leadership</span>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight">
             Leadership Experience<br />
             <span className="text-gold-gradient">& Proven Impact</span>
           </h1>
