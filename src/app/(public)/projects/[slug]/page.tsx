@@ -105,7 +105,7 @@ export default async function CaseStudyPage({ params }: Props) {
           </div>
 
           {/* Title */}
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-tight mb-4">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight mb-4">
             {project.title}
           </h1>
 

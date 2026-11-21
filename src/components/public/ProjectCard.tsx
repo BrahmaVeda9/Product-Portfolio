@@ -11,7 +11,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="card-light card-light-interactive group flex h-full flex-col overflow-hidden shadow-card"
+      className="card-light card-light-interactive group flex flex-col overflow-hidden shadow-card"
     >
       {/* Thumbnail */}
       <div className="relative h-48 w-full overflow-hidden bg-ivory-200">

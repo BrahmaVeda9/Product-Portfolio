@@ -76,7 +76,7 @@ export default async function AboutPage() {
         </div>
         <div className="relative mx-auto max-w-5xl px-6">
           <span className="section-label-dark mb-4 block w-fit">Leadership Profile</span>
-          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl">
             Product Philosophy,<br />
             <span className="text-gold-gradient">Vision & Stewardship</span>
           </h1>

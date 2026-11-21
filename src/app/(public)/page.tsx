@@ -3,9 +3,6 @@ import type { Profile, Project } from '@/types/database.types';
 import Link from 'next/link';
 import Image from 'next/image';
 import ProjectCard from '@/components/public/ProjectCard';
-import HeroSceneLoader from '@/components/three/HeroSceneLoader';
-import Tilt from '@/components/public/Tilt';
-import Reveal from '@/components/public/Reveal';
 import type { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/utils';
 
@@ -129,12 +126,6 @@ export default async function HomePage() {
           />
         </div>
 
-        {/* 3D scene (decorative) */}
-        <div className="absolute inset-0 opacity-40 sm:opacity-60 lg:opacity-100">
-          <HeroSceneLoader />
-        </div>
-        <div className="pointer-events-none absolute inset-0 hero-vignette" />
-
         <div className="relative mx-auto max-w-6xl px-6 pt-32 pb-24 sm:pt-40 sm:pb-32 w-full">
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
 
@@ -151,18 +142,18 @@ export default async function HomePage() {
 
               {/* Name & headline */}
               <div className="space-y-3">
-                <h1 className="hero-rise font-display text-5xl sm:text-6xl lg:text-[4.25rem] font-semibold tracking-tight text-white leading-[1.05]">
+                <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-white leading-[1.08]">
                   {profile?.full_name ? (
                     <>
                       {profile.full_name}
-                      <span className="block mt-3 text-2xl sm:text-3xl lg:text-[2rem] font-medium italic leading-snug">
-                        <span className="text-gold-shimmer">{displayHeadline}</span>
+                      <span className="block mt-2 text-2xl sm:text-3xl lg:text-[1.75rem] font-medium leading-snug">
+                        <span className="text-gold-gradient">{displayHeadline}</span>
                       </span>
                     </>
                   ) : (
                     <>
                       Executive Product<br />
-                      <span className="text-gold-shimmer">Leadership & Strategy</span>
+                      <span className="text-gold-gradient">Leadership & Strategy</span>
                     </>
                   )}
                 </h1>
@@ -248,10 +239,10 @@ export default async function HomePage() {
 
             {/* ── Right: Profile Card ── */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <Tilt className="relative w-full max-w-sm" max={8}>
+              <div className="relative w-full max-w-sm">
                 {/* Glow behind card */}
                 <div className="absolute inset-4 bg-gold-400/8 rounded-3xl blur-2xl" />
-                <div className="relative overflow-hidden rounded-2xl border border-white/[0.12] bg-navy-900/30 shadow-navy-lg backdrop-blur-[2px]">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.09] bg-navy-900/80 shadow-navy-lg backdrop-blur-sm">
                   {profile?.avatar_url ? (
                     <div className="relative aspect-[4/5] w-full">
                       <Image
@@ -264,7 +255,7 @@ export default async function HomePage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-transparent to-transparent" />
                     </div>
                   ) : (
-                    <div className="relative aspect-[4/5] w-full flex flex-col items-center justify-between p-8 bg-gradient-to-b from-navy-800/20 to-navy-950/50">
+                    <div className="relative aspect-[4/5] w-full flex flex-col items-center justify-between p-8 bg-gradient-to-b from-navy-800 to-navy-950">
                       <div className="w-full flex justify-between items-center text-xs font-mono text-zinc-500">
                         <span>PORTFOLIO</span>
                         <span>v2</span>
@@ -302,7 +293,7 @@ export default async function HomePage() {
                     </div>
                   </div>
                 </div>
-              </Tilt>
+              </div>
             </div>
 
           </div>
@@ -326,7 +317,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-14 max-w-2xl">
             <span className="section-label-light mb-4 block w-fit">Strategic Domains</span>
-            <h2 className="font-display text-4xl sm:text-5xl font-semibold tracking-tight text-navy-900">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-navy-900">
               Core Leadership Competencies
             </h2>
             <p className="mt-3 text-base leading-relaxed text-slate-500">
@@ -335,11 +326,10 @@ export default async function HomePage() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {expertiseAreas.map((area, i) => (
-              <Reveal key={area.title} delay={i * 90} className="h-full">
-              <Tilt className="h-full">
+            {expertiseAreas.map((area) => (
               <div
-                className="card-light h-full p-6 flex flex-col gap-4 hover:shadow-ivory-lg transition-shadow duration-300"
+                key={area.title}
+                className="card-light p-6 flex flex-col gap-4 hover:shadow-ivory-lg transition-all duration-300 hover:-translate-y-1"
               >
                 <div className={`flex h-11 w-11 items-center justify-center rounded-xl border ${area.iconBg} ${area.color}`}>
                   {area.icon}
@@ -356,8 +346,6 @@ export default async function HomePage() {
                   </p>
                 </div>
               </div>
-              </Tilt>
-              </Reveal>
             ))}
           </div>
         </div>
@@ -372,7 +360,7 @@ export default async function HomePage() {
             <div className="mb-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div className="max-w-2xl">
                 <span className="section-label-dark mb-4 block w-fit">Track Record</span>
-                <h2 className="font-display text-4xl sm:text-5xl font-semibold tracking-tight text-white">
+                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
                   Featured Case Studies
                 </h2>
                 <p className="mt-2 text-base text-zinc-400">
@@ -385,12 +373,8 @@ export default async function HomePage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {featuredProjects.map((project, i) => (
-                <Reveal key={project.id} delay={i * 100} className="h-full">
-                  <Tilt className="h-full" max={4}>
-                    <ProjectCard project={project} />
-                  </Tilt>
-                </Reveal>
+              {featuredProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           </div>
@@ -411,7 +395,7 @@ export default async function HomePage() {
               <span className="badge-gold">
                 Open to New Opportunities
               </span>
-              <h2 className="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white">
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">
                 Let's Build Something Meaningful
               </h2>
               <p className="text-sm sm:text-base leading-relaxed text-zinc-300">

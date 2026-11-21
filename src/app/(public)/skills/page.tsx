@@ -112,7 +112,7 @@ export default async function SkillsPage() {
         </div>
         <div className="relative mx-auto max-w-5xl px-6">
           <span className="section-label-dark mb-4 block w-fit">Core Competencies</span>
-          <h1 className="font-display text-5xl sm:text-6xl font-semibold tracking-tight text-white leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
             Strategic Domains &<br />
             <span className="text-gold-gradient">Product Capabilities</span>
           </h1>
