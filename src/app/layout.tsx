@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   description: 'Senior Product Manager specializing in AI/GenAI, SaaS, ERP, and workflow automation.',
   keywords: ['Product Manager', 'AI', 'GenAI', 'SaaS', 'ERP', 'Workflow Automation', 'Portfolio'],
   authors: [{ name: 'Portfolio Owner' }],
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    apple: '/icon.svg',
+  },
   robots: {
     index: true,
     follow: true,
